@@ -3,6 +3,7 @@
 ## Contents
 
 - [Getting Started](getting-started.md) — installation, first event, register/unregister
+- [Source Generator](source-generator.md) — auto-generate event properties with `[AsyncEvent]`
 - [Invoke Modes](invoke-modes.md) — Parallel vs Sequential, when to use each
 - [Cancelable Events](cancel-events.md) — CancelEventArgs, CancelableAsyncEventHandler, short-circuit pipelines
 - [Advanced](advanced.md) — struct semantics, field vs property handlers, mode override

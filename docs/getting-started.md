@@ -68,6 +68,34 @@ public event AsyncEvent<OrderPlacedArgs> OrderPlaced
 
 Callers subscribe and unsubscribe with `+=` / `-=` as usual; internally it routes to `Register`/`Unregister`.
 
+## Use the source generator
+
+Instead of writing the `add`/`remove` accessors manually, annotate the field with `[AsyncEvent]` on a `partial` class:
+
+```csharp
+public partial class OrderService
+{
+    [AsyncEvent(InvokeMode.Parallel)]
+    private AsyncEventHandler<OrderPlacedArgs> _orderPlaced = new(InvokeMode.Parallel);
+
+    // Generated automatically — no need to write this:
+    // public event AsyncEvent<OrderPlacedArgs> OrderPlaced { ... }
+}
+```
+
+Apply `[AsyncEvent]` on the class to cover all `AsyncEventHandler<TArgs>` fields at once:
+
+```csharp
+[AsyncEvent(InvokeMode.Parallel)]
+public partial class OrderService
+{
+    private AsyncEventHandler<OrderPlacedArgs> _orderPlaced = new(InvokeMode.Parallel);
+    private AsyncEventHandler<ItemShippedArgs> _itemShipped = new(InvokeMode.Parallel);
+}
+```
+
+See [Source Generator](source-generator.md) for full details including field-overrides class mode.
+
 ## Cancelable events
 
 For sequential pipelines where an early handler should abort the rest, use `CancelableAsyncEventHandler<TArgs>` with `CancelEventArgs`. See [Cancelable Events](cancel-events.md) for details.

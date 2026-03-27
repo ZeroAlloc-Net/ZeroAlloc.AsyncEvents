@@ -32,10 +32,10 @@ dotnet add package ZeroAlloc.AsyncEvents
 ## Quick Start
 
 ```csharp
-// Declare
+// Declare the backing field
 private AsyncEventHandler<OrderPlacedArgs> _orderPlaced = new(InvokeMode.Parallel);
 
-// Expose as a C# event with explicit add/remove
+// Expose as a C# event — or use [AsyncEvent] to let the source generator do this
 public event AsyncEvent<OrderPlacedArgs> OrderPlaced
 {
     add    => _orderPlaced.Register(value);
@@ -45,6 +45,30 @@ public event AsyncEvent<OrderPlacedArgs> OrderPlaced
 // Invoke
 await _orderPlaced.InvokeAsync(new OrderPlacedArgs(orderId), cancellationToken);
 ```
+
+## Source Generator
+
+Annotate fields with `[AsyncEvent]` on a `partial` class and the generator writes the `event` property for you:
+
+```csharp
+public partial class OrderService
+{
+    [AsyncEvent(InvokeMode.Parallel)]
+    private AsyncEventHandler<OrderPlacedArgs> _orderPlaced = new(InvokeMode.Parallel);
+}
+```
+
+Generates:
+
+```csharp
+public event AsyncEvent<OrderPlacedArgs> OrderPlaced
+{
+    add    => _orderPlaced.Register(value);
+    remove => _orderPlaced.Unregister(value);
+}
+```
+
+Apply `[AsyncEvent]` to the class instead to cover all `AsyncEventHandler<TArgs>` fields at once. See [Source Generator](docs/source-generator.md) for details.
 
 ## Async INotify\* Interfaces
 
