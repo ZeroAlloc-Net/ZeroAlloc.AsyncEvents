@@ -52,4 +52,18 @@ public class EventArgsTests
         var args = new CancelEventArgs();
         Assert.IsAssignableFrom<IAsyncEventArgs>(args);
     }
+
+    [Fact]
+    public void AsyncEventAttribute_DefaultModeIsParallel()
+    {
+        var attr = new AsyncEventAttribute();
+        Assert.Equal(InvokeMode.Parallel, attr.Mode);
+    }
+
+    [Fact]
+    public void AsyncEventAttribute_CanSetSequential()
+    {
+        var attr = new AsyncEventAttribute(InvokeMode.Sequential);
+        Assert.Equal(InvokeMode.Sequential, attr.Mode);
+    }
 }
