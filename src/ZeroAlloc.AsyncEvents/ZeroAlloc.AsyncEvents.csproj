@@ -8,6 +8,12 @@
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <IsAotCompatible>true</IsAotCompatible>
   </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ZeroAlloc.AsyncEvents.Generator\ZeroAlloc.AsyncEvents.Generator.csproj"
+                      OutputItemType="Analyzer"
+                      ReferenceOutputAssembly="false"
+                      PrivateAssets="all" />
+  </ItemGroup>
   <!-- Polyfills only needed on netstandard2.0 -->
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
     <PackageReference Include="System.Buffers" Version="4.5.1" />

@@ -3,6 +3,7 @@
     <Project Path="benchmarks/AsyncEvents.Benchmarks/AsyncEvents.Benchmarks.csproj" />
   </Folder>
   <Folder Name="/src/">
+    <Project Path="src/ZeroAlloc.AsyncEvents.Generator/ZeroAlloc.AsyncEvents.Generator.csproj" />
     <Project Path="src/ZeroAlloc.AsyncEvents/ZeroAlloc.AsyncEvents.csproj" />
   </Folder>
   <Folder Name="/tests/">
