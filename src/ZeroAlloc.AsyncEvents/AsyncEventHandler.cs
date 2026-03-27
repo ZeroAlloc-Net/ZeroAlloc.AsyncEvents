@@ -62,22 +62,39 @@ public struct AsyncEventHandler<TArgs>
         while (Interlocked.CompareExchange(ref state.Callbacks, updated, current) != current);
     }
 
-    public async ValueTask InvokeAsync(TArgs args, CancellationToken ct = default)
+    public ValueTask InvokeAsync(TArgs args, CancellationToken ct = default)
     {
         var callbacks = _state?.Callbacks;
-        if (callbacks is null || callbacks.Length == 0) return;
+        if (callbacks is null || callbacks.Length == 0) return default;
 
         if (_mode == InvokeMode.Sequential)
-        {
-            foreach (var cb in callbacks)
-            {
-                ct.ThrowIfCancellationRequested();
-                await cb(args, ct).ConfigureAwait(false);
-            }
-            return;
-        }
+            return InvokeSequentialAsync(callbacks, args, ct);
 
-        // Parallel: rent Task[] from ArrayPool, invoke all, WhenAll, return
+        return InvokeParallelAsync(callbacks, args, ct);
+    }
+
+    public ValueTask InvokeAsync(TArgs args, InvokeMode modeOverride, CancellationToken ct = default)
+    {
+        var callbacks = _state?.Callbacks;
+        if (callbacks is null || callbacks.Length == 0) return default;
+
+        if (modeOverride == InvokeMode.Sequential)
+            return InvokeSequentialAsync(callbacks, args, ct);
+
+        return InvokeParallelAsync(callbacks, args, ct);
+    }
+
+    private static async ValueTask InvokeSequentialAsync(AsyncEvent<TArgs>[] callbacks, TArgs args, CancellationToken ct)
+    {
+        foreach (var cb in callbacks)
+        {
+            ct.ThrowIfCancellationRequested();
+            await cb(args, ct).ConfigureAwait(false);
+        }
+    }
+
+    private static async ValueTask InvokeParallelAsync(AsyncEvent<TArgs>[] callbacks, TArgs args, CancellationToken ct)
+    {
         var count = callbacks.Length;
         var tasks = ArrayPool<Task>.Shared.Rent(count);
         try
