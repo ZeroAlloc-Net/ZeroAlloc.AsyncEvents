@@ -17,6 +17,9 @@ public class GeneratorTests
             }
             """);
 
+    // Generated output is structurally identical to the Parallel variant.
+    // InvokeMode is a runtime property of AsyncEventHandler<T> (set on the field declaration),
+    // not reflected in the generated add/remove accessors.
     [Fact]
     public Task FieldAttribute_Sequential_GeneratesEvent()
         => Verify("""
@@ -40,6 +43,8 @@ public class GeneratorTests
             }
             """);
 
+    // "Overrides" here refers to parser logic: the field-level [AsyncEvent] is respected even when
+    // the class also has [AsyncEvent]. The generated accessor is structurally the same as other cases.
     [Fact]
     public Task FieldAttribute_OverridesClassAttribute()
         => Verify("""
