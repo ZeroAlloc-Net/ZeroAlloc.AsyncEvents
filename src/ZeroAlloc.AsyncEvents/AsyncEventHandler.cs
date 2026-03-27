@@ -1,4 +1,6 @@
+using System.Buffers;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace ZeroAlloc.AsyncEvents;
 
@@ -58,6 +60,39 @@ public struct AsyncEventHandler<TArgs>
             Array.Copy(current, idx + 1, updated, idx, current.Length - idx - 1);
         }
         while (Interlocked.CompareExchange(ref state.Callbacks, updated, current) != current);
+    }
+
+    public async ValueTask InvokeAsync(TArgs args, CancellationToken ct = default)
+    {
+        var callbacks = _state?.Callbacks;
+        if (callbacks is null || callbacks.Length == 0) return;
+
+        if (_mode == InvokeMode.Sequential)
+        {
+            foreach (var cb in callbacks)
+            {
+                ct.ThrowIfCancellationRequested();
+                await cb(args, ct).ConfigureAwait(false);
+            }
+            return;
+        }
+
+        // Parallel: rent Task[] from ArrayPool, invoke all, WhenAll, return
+        var count = callbacks.Length;
+        var tasks = ArrayPool<Task>.Shared.Rent(count);
+        try
+        {
+            for (var i = 0; i < count; i++)
+            {
+                ct.ThrowIfCancellationRequested();
+                tasks[i] = callbacks[i](args, ct).AsTask();
+            }
+            await Task.WhenAll(new ArraySegment<Task>(tasks, 0, count)).ConfigureAwait(false);
+        }
+        finally
+        {
+            ArrayPool<Task>.Shared.Return(tasks, clearArray: true);
+        }
     }
 
     public static AsyncEventHandler<TArgs> operator +(AsyncEventHandler<TArgs> handler, AsyncEvent<TArgs> callback)
