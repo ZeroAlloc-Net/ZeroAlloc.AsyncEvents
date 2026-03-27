@@ -104,4 +104,33 @@ public class CancelableEventHandlerTests
 
         Assert.Equal(cts.Token, received);
     }
+
+    [Fact]
+    public async Task Sequential_PreCancelledToken_ThrowsBeforeFirstHandler()
+    {
+        var handler = new CancelableAsyncEventHandler<CancelEventArgs>(InvokeMode.Sequential);
+        var called = false;
+        handler += (args, ct) => { called = true; return ValueTask.CompletedTask; };
+
+        using var cts = new CancellationTokenSource();
+        cts.Cancel();
+
+        await Assert.ThrowsAsync<OperationCanceledException>(
+            () => handler.InvokeAsync(new CancelEventArgs(), cts.Token).AsTask());
+
+        Assert.False(called);
+    }
+
+    [Fact]
+    public async Task InvokeAsync_ModeOverride_Sequential_ShortCircuitsOnCancel()
+    {
+        var handler = new CancelableAsyncEventHandler<CancelEventArgs>(InvokeMode.Parallel);
+        var calls = new List<int>();
+        handler += (args, ct) => { calls.Add(1); args.Cancel = true; return ValueTask.CompletedTask; };
+        handler += (args, ct) => { calls.Add(2); return ValueTask.CompletedTask; };
+
+        await handler.InvokeAsync(new CancelEventArgs(), InvokeMode.Sequential);
+
+        Assert.Equal(new[] { 1 }, calls);
+    }
 }
