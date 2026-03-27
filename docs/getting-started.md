@@ -51,3 +51,7 @@ Use `+=` / `-=` operators as shorthand:
 _orderPlaced += OnOrderPlacedAsync;
 _orderPlaced -= OnOrderPlacedAsync;
 ```
+
+## Cancelable events
+
+For sequential pipelines where an early handler should abort the rest, use `CancelableAsyncEventHandler<TArgs>` with `CancelEventArgs`. See [Cancelable Events](cancel-events.md) for details.

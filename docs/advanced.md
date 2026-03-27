@@ -16,6 +16,8 @@ public void Subscribe(AsyncEvent<string> cb) => _handler.Register(cb);
 public void Unsubscribe(AsyncEvent<string> cb) => _handler.Unregister(cb);
 ```
 
+`CancelableAsyncEventHandler<TArgs> where TArgs : ICancelable` follows the same struct semantics. The `ICancelable` constraint ensures the handler can read and short-circuit on `args.Cancel`. Because mutations must propagate back to the caller, `TArgs` must be a reference type (e.g. `CancelEventArgs`) — see [Cancelable Events](cancel-events.md).
+
 ## Per-call mode override
 
 The `InvokeAsync(args, InvokeMode, ct)` overload lets a field declared as `Parallel` be invoked sequentially at specific call sites:

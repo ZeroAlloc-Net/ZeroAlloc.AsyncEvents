@@ -4,6 +4,7 @@
 
 - [Getting Started](getting-started.md) — installation, first event, register/unregister
 - [Invoke Modes](invoke-modes.md) — Parallel vs Sequential, when to use each
+- [Cancelable Events](cancel-events.md) — CancelEventArgs, CancelableAsyncEventHandler, short-circuit pipelines
 - [Advanced](advanced.md) — struct semantics, field vs property handlers, mode override
 - [Testing](testing.md) — testing async event handlers with xunit
 - [Performance](performance.md) — benchmark results and methodology
