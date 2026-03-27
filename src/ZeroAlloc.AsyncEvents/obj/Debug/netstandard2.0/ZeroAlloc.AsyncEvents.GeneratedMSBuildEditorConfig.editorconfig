@@ -1,0 +1,9 @@
+is_global = true
+build_property.TargetFramework = netstandard2.0
+build_property.RootNamespace = ZeroAlloc.AsyncEvents
+build_property.ProjectDir = C:\Projects\Prive\ZeroAlloc.AsyncEvents\src\ZeroAlloc.AsyncEvents\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.CsWinRTUseWindowsUIXamlProjections = false
+build_property.EffectiveAnalysisLevelStyle = 
+build_property.EnableCodeStyleSeverity = 

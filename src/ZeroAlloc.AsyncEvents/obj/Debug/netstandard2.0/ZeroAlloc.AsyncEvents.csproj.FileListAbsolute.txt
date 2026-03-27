@@ -1,0 +1,10 @@
+C:\Projects\Prive\ZeroAlloc.AsyncEvents\src\ZeroAlloc.AsyncEvents\bin\Debug\netstandard2.0\ZeroAlloc.AsyncEvents.deps.json
+C:\Projects\Prive\ZeroAlloc.AsyncEvents\src\ZeroAlloc.AsyncEvents\bin\Debug\netstandard2.0\ZeroAlloc.AsyncEvents.dll
+C:\Projects\Prive\ZeroAlloc.AsyncEvents\src\ZeroAlloc.AsyncEvents\bin\Debug\netstandard2.0\ZeroAlloc.AsyncEvents.pdb
+C:\Projects\Prive\ZeroAlloc.AsyncEvents\src\ZeroAlloc.AsyncEvents\obj\Debug\netstandard2.0\ZeroAlloc.AsyncEvents.csproj.AssemblyReference.cache
+C:\Projects\Prive\ZeroAlloc.AsyncEvents\src\ZeroAlloc.AsyncEvents\obj\Debug\netstandard2.0\ZeroAlloc.AsyncEvents.GeneratedMSBuildEditorConfig.editorconfig
+C:\Projects\Prive\ZeroAlloc.AsyncEvents\src\ZeroAlloc.AsyncEvents\obj\Debug\netstandard2.0\ZeroAlloc.AsyncEvents.AssemblyInfoInputs.cache
+C:\Projects\Prive\ZeroAlloc.AsyncEvents\src\ZeroAlloc.AsyncEvents\obj\Debug\netstandard2.0\ZeroAlloc.AsyncEvents.AssemblyInfo.cs
+C:\Projects\Prive\ZeroAlloc.AsyncEvents\src\ZeroAlloc.AsyncEvents\obj\Debug\netstandard2.0\ZeroAlloc.AsyncEvents.csproj.CoreCompileInputs.cache
+C:\Projects\Prive\ZeroAlloc.AsyncEvents\src\ZeroAlloc.AsyncEvents\obj\Debug\netstandard2.0\ZeroAlloc.AsyncEvents.dll
+C:\Projects\Prive\ZeroAlloc.AsyncEvents\src\ZeroAlloc.AsyncEvents\obj\Debug\netstandard2.0\ZeroAlloc.AsyncEvents.pdb

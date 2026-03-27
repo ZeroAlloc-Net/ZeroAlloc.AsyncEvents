@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/ZeroAlloc.AsyncEvents/ZeroAlloc.AsyncEvents.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/ZeroAlloc.AsyncEvents.Tests/ZeroAlloc.AsyncEvents.Tests.csproj" />
+  </Folder>
+</Solution>
