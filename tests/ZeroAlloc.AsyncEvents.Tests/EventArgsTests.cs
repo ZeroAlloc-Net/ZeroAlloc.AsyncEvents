@@ -1,5 +1,3 @@
-using System.Collections.Specialized;
-
 namespace ZeroAlloc.AsyncEvents.Tests;
 
 public class EventArgsTests
