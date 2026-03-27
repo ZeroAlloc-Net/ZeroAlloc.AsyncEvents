@@ -34,13 +34,13 @@ jobs:
         run: dotnet restore
 
       - name: Build
-        run: dotnet build --no-restore -c Release /p:Version=${{ steps.gitversion.outputs.nuGetVersion }}
+        run: dotnet build --no-restore -c Release /p:Version=${{ steps.gitversion.outputs.fullSemVer }}
 
       - name: Test
         run: dotnet test --no-build -c Release
 
       - name: Pack
-        run: dotnet pack src/ZeroAlloc.AsyncEvents/ZeroAlloc.AsyncEvents.csproj --no-build -c Release /p:Version=${{ steps.gitversion.outputs.nuGetVersion }} -o ./artifacts
+        run: dotnet pack src/ZeroAlloc.AsyncEvents/ZeroAlloc.AsyncEvents.csproj --no-build -c Release /p:Version=${{ steps.gitversion.outputs.fullSemVer }} -o ./artifacts
 
       - name: Push pre-release to NuGet
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
