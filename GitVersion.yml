@@ -5,10 +5,6 @@ branches:
     regex: ^main$
     tag: ''
     increment: Patch
-  master:
-    regex: ^master$
-    tag: ''
-    increment: Patch
   release:
     regex: ^release[/-]
     tag: rc
