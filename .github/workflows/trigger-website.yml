@@ -2,7 +2,7 @@ name: Trigger Website
 
 on:
   push:
-    branches: [master]
+    branches: [main]
     paths: ['docs/**']
 
 jobs:
