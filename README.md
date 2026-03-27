@@ -35,17 +35,15 @@ dotnet add package ZeroAlloc.AsyncEvents
 // Declare
 private AsyncEventHandler<OrderPlacedArgs> _orderPlaced = new(InvokeMode.Parallel);
 
-// Register
-_orderPlaced.Register(async (args, ct) =>
+// Expose as a C# event with explicit add/remove
+public event AsyncEvent<OrderPlacedArgs> OrderPlaced
 {
-    await SendConfirmationEmailAsync(args.OrderId, ct);
-});
+    add    => _orderPlaced.Register(value);
+    remove => _orderPlaced.Unregister(value);
+}
 
 // Invoke
 await _orderPlaced.InvokeAsync(new OrderPlacedArgs(orderId), cancellationToken);
-
-// Unregister
-_orderPlaced.Unregister(handler);
 ```
 
 ## Async INotify\* Interfaces

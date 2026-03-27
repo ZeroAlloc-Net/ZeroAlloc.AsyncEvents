@@ -52,6 +52,22 @@ _orderPlaced += OnOrderPlacedAsync;
 _orderPlaced -= OnOrderPlacedAsync;
 ```
 
+## Expose as a C# event
+
+Use explicit `add`/`remove` accessors to expose the handler as a standard C# `event`:
+
+```csharp
+private AsyncEventHandler<OrderPlacedArgs> _orderPlaced = new(InvokeMode.Parallel);
+
+public event AsyncEvent<OrderPlacedArgs> OrderPlaced
+{
+    add    => _orderPlaced.Register(value);
+    remove => _orderPlaced.Unregister(value);
+}
+```
+
+Callers subscribe and unsubscribe with `+=` / `-=` as usual; internally it routes to `Register`/`Unregister`.
+
 ## Cancelable events
 
 For sequential pipelines where an early handler should abort the rest, use `CancelableAsyncEventHandler<TArgs>` with `CancelEventArgs`. See [Cancelable Events](cancel-events.md) for details.
