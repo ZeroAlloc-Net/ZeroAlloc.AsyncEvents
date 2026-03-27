@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/compare/v0.2.0...v0.2.1) (2026-03-27)
+
+
+### Bug Fixes
+
+* add netstandard polyfills for IsExternalInit, RequiredMemberAttribute, CompilerFeatureRequiredAttribute ([806143f](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/commit/806143f171bc896a982930744ac50ea09a8e9f60))
+
 ## [0.2.0](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/compare/v0.1.0...v0.2.0) (2026-03-27)
 
 
