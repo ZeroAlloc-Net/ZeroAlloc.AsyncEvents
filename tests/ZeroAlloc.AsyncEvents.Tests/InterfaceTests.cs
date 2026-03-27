@@ -33,7 +33,9 @@ public class InterfaceTests
             remove => _errorsChanged.Unregister(value);
         }
         public bool HasErrors => false;
+#pragma warning disable HLQ003 // return type is constrained by INotifyDataErrorInfoAsync interface contract
         public IEnumerable GetErrors(string? propertyName) => Array.Empty<object>();
+#pragma warning restore HLQ003
     }
 
     [Fact]

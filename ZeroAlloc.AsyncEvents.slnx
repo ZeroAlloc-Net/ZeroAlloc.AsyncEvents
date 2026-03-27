@@ -1,4 +1,7 @@
 <Solution>
+  <Folder Name="/benchmarks/">
+    <Project Path="benchmarks/AsyncEvents.Benchmarks/AsyncEvents.Benchmarks.csproj" />
+  </Folder>
   <Folder Name="/src/">
     <Project Path="src/ZeroAlloc.AsyncEvents/ZeroAlloc.AsyncEvents.csproj" />
   </Folder>
