@@ -81,6 +81,18 @@ public class GeneratorTests
             }
             """);
 
+    // Verifies the parser guard: a field without [AsyncEvent] in a class without [AsyncEvent]
+    // must not be included — guards against accidental removal of the attribute-presence check.
+    [Fact]
+    public Task NoAttribute_NoOutput()
+        => Verify("""
+            using ZeroAlloc.AsyncEvents;
+            public partial class MyService
+            {
+                private AsyncEventHandler<string> _orderPlaced;
+            }
+            """);
+
     private static Task Verify(string source)
     {
         var compilation = CreateCompilation(source);

@@ -13,6 +13,10 @@
                       OutputItemType="Analyzer"
                       ReferenceOutputAssembly="false"
                       PrivateAssets="all" />
+    <None Include="..\ZeroAlloc.AsyncEvents.Generator\bin\$(Configuration)\netstandard2.0\ZeroAlloc.AsyncEvents.Generator.dll"
+          Pack="true"
+          PackagePath="analyzers/dotnet/cs"
+          Visible="false" />
   </ItemGroup>
   <!-- Polyfills only needed on netstandard2.0 -->
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
