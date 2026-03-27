@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <PackageId>ZeroAlloc.AsyncEvents</PackageId>
     <Description>Zero-allocation async event handler structs and async INotify* interfaces for .NET. Lock-free registration, ValueTask invocation, ArrayPool parallel dispatch.</Description>
     <Version>0.0.0-local</Version>
