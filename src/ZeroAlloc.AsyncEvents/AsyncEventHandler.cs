@@ -104,7 +104,7 @@ public struct AsyncEventHandler<TArgs>
                 ct.ThrowIfCancellationRequested();
                 tasks[i] = callbacks[i](args, ct).AsTask();
             }
-            await Task.WhenAll(new ArraySegment<Task>(tasks, 0, count)).ConfigureAwait(false);
+            await Task.WhenAll((IEnumerable<Task>)new ArraySegment<Task>(tasks, 0, count)).ConfigureAwait(false);
         }
         finally
         {
