@@ -1,13 +1,12 @@
 # ZeroAlloc.AsyncEvents
 
-Zero-allocation async event handler structs and async `INotify*` interfaces for .NET. Lock-free registration, `ValueTask` invocation, `ArrayPool` parallel dispatch.
+Zero-allocation async event handler structs for .NET. Lock-free registration, `ValueTask` invocation, `ArrayPool` parallel dispatch.
 
 ## Key Characteristics
 
 - **Lock-free registration** — CAS-loop register/unregister, no locks
 - **ValueTask throughout** — no `Task` allocations on hot paths
 - **ArrayPool parallel dispatch** — rented array for fan-out, returned immediately after `WhenAll`
-- **Async `INotify*` interfaces** — `INotifyPropertyChangedAsync`, `INotifyPropertyChangingAsync`, `INotifyCollectionChangedAsync`, `INotifyDataErrorInfoAsync`
 - **Multi-target** — `netstandard2.0`, `netstandard2.1`, `net8.0`, `net10.0`
 - **AOT compatible**
 
@@ -51,23 +50,7 @@ _orderPlaced.Unregister(handler);
 
 ## Async INotify\* Interfaces
 
-```csharp
-public class ViewModel : INotifyPropertyChangedAsync
-{
-    public event AsyncEvent<AsyncPropertyChangedEventArgs> PropertyChangedAsync;
-
-    private string _name = "";
-    public string Name
-    {
-        get => _name;
-        set
-        {
-            _name = value;
-            _ = PropertyChangedAsync.InvokeAsync(new AsyncPropertyChangedEventArgs(nameof(Name)));
-        }
-    }
-}
-```
+Async `INotify*` interfaces and event args are provided by [ZeroAlloc.Notify](https://github.com/ZeroAlloc-Net/ZeroAlloc.Notify), which builds on this package.
 
 ## Design Philosophy
 
