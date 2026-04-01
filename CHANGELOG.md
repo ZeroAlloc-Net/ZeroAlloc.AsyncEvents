@@ -1,5 +1,21 @@
 # Changelog
 
+## [0.3.0](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/compare/v0.2.1...v0.3.0) (2026-04-01)
+
+
+### Features
+
+* add AsyncEventAttribute ([529fcf4](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/commit/529fcf45d1cdcab561cb7693f38b014d122f6fac))
+* add AsyncEventParser and models ([21fb894](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/commit/21fb894502bf3485ee7aa69d5a21797c5f0bf9a9))
+* add ZeroAlloc.AsyncEvents.Generator project ([da76d30](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/commit/da76d30ada1183912c64022c8fab6f14c176d7be))
+* implement AsyncEventWriter and AsyncEventGenerator ([f926486](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/commit/f9264860c63eb67dccf07cde1dbbc5c5693c1528))
+
+
+### Bug Fixes
+
+* add frontmatter with slug: / to getting-started for root URL ([2ab91fb](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/commit/2ab91fbd5f8640695723eb87a88501988c67f2cb))
+* pack generator DLL into analyzers/dotnet/cs; add NoAttribute_NoOutput test ([012510a](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/commit/012510a8a588883be8ef5f1cddf4641196373ea6))
+
 ## [0.2.1](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/compare/v0.2.0...v0.2.1) (2026-03-27)
 
 
