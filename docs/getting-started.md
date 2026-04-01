@@ -1,3 +1,10 @@
+---
+id: getting-started
+title: Getting Started
+slug: /
+sidebar_position: 1
+---
+
 # Getting Started
 
 ## Installation
