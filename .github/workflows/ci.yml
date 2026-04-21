@@ -22,12 +22,12 @@ jobs:
           dotnet-version: '10.0.x'
 
       - name: Install GitVersion
-        uses: gittools/actions/gitversion/setup@v3
+        uses: gittools/actions/gitversion/setup@v4.5.0
         with:
           versionSpec: '6.x'
 
       - name: Run GitVersion
-        uses: gittools/actions/gitversion/execute@v3
+        uses: gittools/actions/gitversion/execute@v4.5.0
         id: gitversion
 
       - name: Restore dependencies
