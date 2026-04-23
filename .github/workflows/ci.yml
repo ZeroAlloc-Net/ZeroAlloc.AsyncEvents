@@ -53,7 +53,7 @@ jobs:
     # emission paths — any reflection regression in the generated event
     # accessors fires IL2026/IL3050 via ILC.
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
