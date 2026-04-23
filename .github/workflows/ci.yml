@@ -45,3 +45,31 @@ jobs:
       - name: Push pre-release to NuGet
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: dotnet nuget push ./artifacts/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json --skip-duplicate
+
+  aot-smoke:
+    runs-on: ubuntu-latest
+    # Publishes samples/ZeroAlloc.AsyncEvents.AotSmoke with PublishAot=true and
+    # runs the binary. Covers both InvokeMode.Sequential and InvokeMode.Parallel
+    # emission paths — any reflection regression in the generated event
+    # accessors fires IL2026/IL3050 via ILC.
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Install AOT native toolchain
+        run: sudo apt-get update && sudo apt-get install -y clang zlib1g-dev
+
+      - name: Restore
+        run: dotnet restore samples/ZeroAlloc.AsyncEvents.AotSmoke/ZeroAlloc.AsyncEvents.AotSmoke.csproj
+
+      - name: Publish AOT
+        run: dotnet publish samples/ZeroAlloc.AsyncEvents.AotSmoke/ZeroAlloc.AsyncEvents.AotSmoke.csproj -r linux-x64 -c Release -o ./aot-out
+
+      - name: Run AOT binary
+        run: ./aot-out/ZeroAlloc.AsyncEvents.AotSmoke

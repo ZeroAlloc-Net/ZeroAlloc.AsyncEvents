@@ -2,6 +2,9 @@
   <Folder Name="/benchmarks/">
     <Project Path="benchmarks/AsyncEvents.Benchmarks/AsyncEvents.Benchmarks.csproj" />
   </Folder>
+  <Folder Name="/samples/">
+    <Project Path="samples/ZeroAlloc.AsyncEvents.AotSmoke/ZeroAlloc.AsyncEvents.AotSmoke.csproj" />
+  </Folder>
   <Folder Name="/src/">
     <Project Path="src/ZeroAlloc.AsyncEvents.Generator/ZeroAlloc.AsyncEvents.Generator.csproj" />
     <Project Path="src/ZeroAlloc.AsyncEvents/ZeroAlloc.AsyncEvents.csproj" />
