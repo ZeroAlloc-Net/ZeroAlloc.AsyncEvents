@@ -1,5 +1,8 @@
 # ZeroAlloc.AsyncEvents
 
+[![GitHub Sponsors](https://img.shields.io/github/sponsors/MarcelRoozekrans?style=flat&logo=githubsponsors&color=ea4aaa&label=Sponsor)](https://github.com/sponsors/MarcelRoozekrans)
+
+
 Zero-allocation async event handler structs for .NET. Lock-free registration, `ValueTask` invocation, `ArrayPool` parallel dispatch.
 
 ## Key Characteristics
