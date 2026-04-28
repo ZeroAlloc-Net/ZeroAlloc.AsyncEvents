@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.0
+
+Stability milestone — public API of `ZeroAlloc.AsyncEvents` is now considered stable. No code changes from 0.3.0; this release marks the transition out of pre-1.0 SemVer.
+
 ## [0.3.0](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/compare/v0.2.1...v0.3.0) (2026-04-01)
 
 
