@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.2](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/compare/v1.0.1...v1.0.2) (2026-04-30)
+
+
+### Bug Fixes
+
+* stop publishing broken stand-alone generator nupkg ([13f0ad4](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/commit/13f0ad4a29043000bb41d0fd084d642e441a5e0e))
+* stop publishing broken stand-alone generator nupkg ([caed5ff](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/commit/caed5ffcf67d4aa2368aec8d68c46b16cfbebdb5))
+
 ## [1.0.1](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/compare/v1.0.0...v1.0.1) (2026-04-29)
 
 
