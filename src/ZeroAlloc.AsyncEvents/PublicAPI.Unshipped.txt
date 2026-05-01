@@ -1,1 +1,44 @@
 #nullable enable
+ZeroAlloc.AsyncEvents.AsyncEvent
+ZeroAlloc.AsyncEvents.AsyncEvent<TArgs>
+ZeroAlloc.AsyncEvents.AsyncEventAttribute
+ZeroAlloc.AsyncEvents.AsyncEventAttribute.AsyncEventAttribute(ZeroAlloc.AsyncEvents.InvokeMode mode = ZeroAlloc.AsyncEvents.InvokeMode.Parallel) -> void
+ZeroAlloc.AsyncEvents.AsyncEventAttribute.Mode.get -> ZeroAlloc.AsyncEvents.InvokeMode
+ZeroAlloc.AsyncEvents.AsyncEventHandler<TArgs>
+ZeroAlloc.AsyncEvents.AsyncEventHandler<TArgs>.AsyncEventHandler() -> void
+ZeroAlloc.AsyncEvents.AsyncEventHandler<TArgs>.AsyncEventHandler(ZeroAlloc.AsyncEvents.InvokeMode mode = ZeroAlloc.AsyncEvents.InvokeMode.Parallel) -> void
+ZeroAlloc.AsyncEvents.AsyncEventHandler<TArgs>.Count.get -> int
+ZeroAlloc.AsyncEvents.AsyncEventHandler<TArgs>.InvokeAsync(TArgs args, System.Threading.CancellationToken ct = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask
+ZeroAlloc.AsyncEvents.AsyncEventHandler<TArgs>.InvokeAsync(TArgs args, ZeroAlloc.AsyncEvents.InvokeMode modeOverride, System.Threading.CancellationToken ct = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask
+ZeroAlloc.AsyncEvents.AsyncEventHandler<TArgs>.Register(ZeroAlloc.AsyncEvents.AsyncEvent<TArgs>! callback) -> void
+ZeroAlloc.AsyncEvents.AsyncEventHandler<TArgs>.Unregister(ZeroAlloc.AsyncEvents.AsyncEvent<TArgs>! callback) -> void
+ZeroAlloc.AsyncEvents.CancelEventArgs
+ZeroAlloc.AsyncEvents.CancelEventArgs.Cancel.get -> bool
+ZeroAlloc.AsyncEvents.CancelEventArgs.Cancel.set -> void
+ZeroAlloc.AsyncEvents.CancelEventArgs.CancelEventArgs() -> void
+ZeroAlloc.AsyncEvents.CancelEventArgs.CancelEventArgs(bool cancel) -> void
+ZeroAlloc.AsyncEvents.CancelableAsyncEventHandler<TArgs>
+ZeroAlloc.AsyncEvents.CancelableAsyncEventHandler<TArgs>.CancelableAsyncEventHandler() -> void
+ZeroAlloc.AsyncEvents.CancelableAsyncEventHandler<TArgs>.CancelableAsyncEventHandler(ZeroAlloc.AsyncEvents.InvokeMode mode = ZeroAlloc.AsyncEvents.InvokeMode.Parallel) -> void
+ZeroAlloc.AsyncEvents.CancelableAsyncEventHandler<TArgs>.Count.get -> int
+ZeroAlloc.AsyncEvents.CancelableAsyncEventHandler<TArgs>.InvokeAsync(TArgs args, System.Threading.CancellationToken ct = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask
+ZeroAlloc.AsyncEvents.CancelableAsyncEventHandler<TArgs>.InvokeAsync(TArgs args, ZeroAlloc.AsyncEvents.InvokeMode modeOverride, System.Threading.CancellationToken ct = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask
+ZeroAlloc.AsyncEvents.CancelableAsyncEventHandler<TArgs>.Register(ZeroAlloc.AsyncEvents.AsyncEvent<TArgs>! callback) -> void
+ZeroAlloc.AsyncEvents.CancelableAsyncEventHandler<TArgs>.Unregister(ZeroAlloc.AsyncEvents.AsyncEvent<TArgs>! callback) -> void
+ZeroAlloc.AsyncEvents.IAsyncEventArgs
+ZeroAlloc.AsyncEvents.ICancelable
+ZeroAlloc.AsyncEvents.ICancelable.Cancel.get -> bool
+ZeroAlloc.AsyncEvents.ICancelable.Cancel.set -> void
+ZeroAlloc.AsyncEvents.InvokeMode
+ZeroAlloc.AsyncEvents.InvokeMode.Parallel = 0 -> ZeroAlloc.AsyncEvents.InvokeMode
+ZeroAlloc.AsyncEvents.InvokeMode.Sequential = 1 -> ZeroAlloc.AsyncEvents.InvokeMode
+ZeroAlloc.AsyncEvents.SourcedAsyncEventArgs
+ZeroAlloc.AsyncEvents.SourcedAsyncEventArgs.Source.get -> object!
+ZeroAlloc.AsyncEvents.SourcedAsyncEventArgs.Source.init -> void
+ZeroAlloc.AsyncEvents.SourcedAsyncEventArgs.SourcedAsyncEventArgs() -> void
+static ZeroAlloc.AsyncEvents.AsyncEventHandler<TArgs>.operator +(ZeroAlloc.AsyncEvents.AsyncEventHandler<TArgs> handler, ZeroAlloc.AsyncEvents.AsyncEvent<TArgs>! callback) -> ZeroAlloc.AsyncEvents.AsyncEventHandler<TArgs>
+static ZeroAlloc.AsyncEvents.AsyncEventHandler<TArgs>.operator -(ZeroAlloc.AsyncEvents.AsyncEventHandler<TArgs> handler, ZeroAlloc.AsyncEvents.AsyncEvent<TArgs>! callback) -> ZeroAlloc.AsyncEvents.AsyncEventHandler<TArgs>
+static ZeroAlloc.AsyncEvents.CancelableAsyncEventHandler<TArgs>.operator +(ZeroAlloc.AsyncEvents.CancelableAsyncEventHandler<TArgs> handler, ZeroAlloc.AsyncEvents.AsyncEvent<TArgs>! callback) -> ZeroAlloc.AsyncEvents.CancelableAsyncEventHandler<TArgs>
+static ZeroAlloc.AsyncEvents.CancelableAsyncEventHandler<TArgs>.operator -(ZeroAlloc.AsyncEvents.CancelableAsyncEventHandler<TArgs> handler, ZeroAlloc.AsyncEvents.AsyncEvent<TArgs>! callback) -> ZeroAlloc.AsyncEvents.CancelableAsyncEventHandler<TArgs>
+virtual ZeroAlloc.AsyncEvents.AsyncEvent.Invoke(System.Threading.CancellationToken ct = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask
+virtual ZeroAlloc.AsyncEvents.AsyncEvent<TArgs>.Invoke(TArgs args, System.Threading.CancellationToken ct = default(System.Threading.CancellationToken)) -> System.Threading.Tasks.ValueTask
