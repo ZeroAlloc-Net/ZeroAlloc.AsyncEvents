@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.1](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/compare/v1.1.0...v1.1.1) (2026-05-12)
+
+
+### Bug Fixes
+
+* **readme:** absolute GitHub URLs so nuget.org links resolve ([#59](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/issues/59)) ([2b2bb97](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/commit/2b2bb975acfee6092a2f74b183c2e08c10382af0))
+
 ## [1.1.0](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/compare/v1.0.2...v1.1.0) (2026-05-01)
 
 
