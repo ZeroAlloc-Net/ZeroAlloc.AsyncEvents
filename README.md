@@ -74,7 +74,7 @@ public event AsyncEvent<OrderPlacedArgs> OrderPlaced
 }
 ```
 
-Apply `[AsyncEvent]` to the class instead to cover all `AsyncEventHandler<TArgs>` fields at once. See [Source Generator](docs/source-generator.md) for details.
+Apply `[AsyncEvent]` to the class instead to cover all `AsyncEventHandler<TArgs>` fields at once. See [Source Generator](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/blob/main/docs/source-generator.md) for details.
 
 ## Async INotify\* Interfaces
 
@@ -86,4 +86,4 @@ Async `INotify*` interfaces and event args are provided by [ZeroAlloc.Notify](ht
 
 `CancellationToken` is threaded through every call site — handlers opt into cooperative cancellation at the delegate boundary. Sequential mode respects cancellation between handler invocations; parallel mode checks before dispatch.
 
-See [docs/](docs/README.md) for full documentation.
+See [docs/](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/blob/main/docs/README.md) for full documentation.
