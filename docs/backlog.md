@@ -4,23 +4,17 @@ Candidate enhancements identified during real-world usage. Each item is independ
 
 ---
 
-## B1 — Extend aot-smoke to cover handler exceptions, unsubscribe/resubscribe, and cancellation
+## ~~B1 — Extend aot-smoke to cover handler exceptions, unsubscribe/resubscribe, and cancellation~~ — ✅ shipped 2026-05-28
 
-**What.** The existing `aot-smoke` project (`samples/ZeroAlloc.AsyncEvents.AotSmoke/`) exercises sequential and parallel handler-invocation happy paths via `Publish`. It does NOT touch three corner-case code paths the generator emits: handler-thrown exceptions under both Sequential and Parallel modes, handler unsubscribe (and resubscribe) lifecycle, and `CancellationToken` propagation under concurrent subscribers. The first consumer to hit any of these under Native AOT + the trimmer will discover the gap.
+**Shipped:** Three new assertion blocks in `samples/ZeroAlloc.AsyncEvents.AotSmoke/Program.cs` (no new fixture files — reuses the existing `OrderService` for each block via fresh instances). Asserts: Sequential exception propagation with handler2 count = 0 (mode bails on first throw); Parallel unsubscribe/resubscribe count progression 1 → 1 → 2; CancellationToken pre-cancellation propagation with no handler invocation.
 
-**Why.** Surfaced 2026-05-27 during the org-wide AOT-smoke coverage survey done after [ZeroAlloc.Serialisation](https://github.com/ZeroAlloc-Net/ZeroAlloc.Serialisation) shipped 2.3.1 + 2.3.2 reactively. ZA.Serialisation's smoke covered only the V0 path while V1 `[ValueObject]` paths were left un-validated — two patches shipped because of that gap. Same "smoke exists but partial" pattern applies here.
+**Findings worth flagging** (durable record):
 
-**Sketch.** Extend `samples/ZeroAlloc.AsyncEvents.AotSmoke/Program.cs` with three fixtures + assertions:
+- **Explicit delegate type requires `using ZeroAlloc.AsyncEvents;`** — Phase 2's `AsyncEvent<int>` local variable needed the namespace imported, while Phase 1's inline lambdas didn't (they were inferred via the `+=` operator behind a generated accessor).
+- **Sequential mode propagates the throw type unwrapped** — `InvalidOperationException` thrown in handler1 surfaces from `InvokeAsync` directly, not wrapped in `AggregateException`. Confirmed by the smoke's `catch (Exception ex)` + `seqCaught is not InvalidOperationException` assertion combo.
+- **`ct.ThrowIfCancellationRequested()` fires BEFORE the handler loop** — `cancelHandlerCount` stays at 0 with a pre-cancelled token. A regression that moved the check to after the handler invocation would fail this assertion clearly.
 
-- A `Sequential` event with one handler that throws and one that succeeds; assert the documented contract (whatever it is — succeeding handler still runs vs. fail-fast vs. aggregated exception) and that the thrown exception is observable to the caller.
-- A `Parallel` event where the second subscriber unsubscribes between two `Publish` calls and then resubscribes; assert the right invocation counts per phase.
-- A handler that observes `CancellationToken` cancellation mid-flight; assert it bails before completion.
-
-The existing happy paths stay; this is purely additive.
-
-**Tradeoff / risks.** No new CI infrastructure. The cancellation test is timing-sensitive (CTS firing mid-handler); use deterministic `TaskCompletionSource` choreography rather than `Thread.Sleep` to avoid flakes.
-
-**Graduation signal.** First downstream consumer that hits a handler-exception bug. Or proactive: ship as a chore commit.
+**Design + plan:** [`docs/plans/2026-05-28-aot-smoke-asyncevents-paths-design.md`](plans/2026-05-28-aot-smoke-asyncevents-paths-design.md) + [`docs/plans/2026-05-28-aot-smoke-asyncevents-paths.md`](plans/2026-05-28-aot-smoke-asyncevents-paths.md).
 
 ---
 
