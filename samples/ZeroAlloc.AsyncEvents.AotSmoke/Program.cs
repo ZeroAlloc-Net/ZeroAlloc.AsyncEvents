@@ -91,6 +91,36 @@ await parSvc.ShipItemAsync(3, CancellationToken.None).ConfigureAwait(false);
 if (parCount != 2)
     return Fail($"Parallel lifecycle phase 3 (after resubscribe): expected 2, got {parCount}");
 
+// Cancellation propagation: pre-cancelled token → InvokeAsync surfaces
+// OperationCanceledException via ct.ThrowIfCancellationRequested() before
+// the first handler runs. Deterministic (no TCS choreography, no timing
+// fragility) — exercises the same code path in-flight cancellation uses.
+var cancelSvc = new OrderService();
+var cancelHandlerCount = 0;
+cancelSvc.OrderPlaced += (id, ct) =>
+{
+    Interlocked.Increment(ref cancelHandlerCount);
+    return ValueTask.CompletedTask;
+};
+
+using var cts = new CancellationTokenSource();
+cts.Cancel();
+
+Exception? cancelCaught = null;
+try
+{
+    await cancelSvc.PlaceOrderAsync("cancel-1", cts.Token).ConfigureAwait(false);
+}
+catch (OperationCanceledException ex)
+{
+    cancelCaught = ex;
+}
+
+if (cancelCaught is null)
+    return Fail("Cancellation: expected OperationCanceledException, got no exception");
+if (cancelHandlerCount != 0)
+    return Fail($"Cancellation: handler should not run when token pre-cancelled (got count {cancelHandlerCount})");
+
 Console.WriteLine("AOT smoke: PASS");
 return 0;
 
