@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.2](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/compare/v1.1.1...v1.1.2) (2026-05-28)
+
+
+### Documentation
+
+* **backlog:** file aot-smoke coverage extension for exception/unsubscribe/cancellation paths ([#75](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/issues/75)) ([ea1c6d2](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/commit/ea1c6d2fd04a53e685f12213dca06c0434431785))
+
 ## [1.1.1](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/compare/v1.1.0...v1.1.1) (2026-05-12)
 
 
