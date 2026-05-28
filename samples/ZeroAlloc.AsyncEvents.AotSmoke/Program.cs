@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using ZeroAlloc.AsyncEvents;
 using ZeroAlloc.AsyncEvents.AotSmoke;
 
 // Exercise the generator-emitted event accessors wrapping AsyncEventHandler<T>
@@ -62,6 +63,33 @@ if (seqCaught is not InvalidOperationException)
     return Fail($"Sequential exception: expected InvalidOperationException, got {seqCaught?.GetType().Name ?? "no exception"}");
 if (seqHandler2Count != 0)
     return Fail($"Sequential exception: handler2 should not run when handler1 throws (got count {seqHandler2Count})");
+
+// Parallel unsubscribe/resubscribe lifecycle: subscribe → invoke (count=1)
+// → unsubscribe → invoke (count still 1) → resubscribe → invoke (count=2).
+// Validates Register's idempotency-aware add + Unregister's CAS-based
+// remove + Re-Register working after Unregister, under PublishAot.
+var parSvc = new OrderService();
+var parCount = 0;
+AsyncEvent<int> parHandler = (id, ct) =>
+{
+    Interlocked.Increment(ref parCount);
+    return ValueTask.CompletedTask;
+};
+
+parSvc.ItemShipped += parHandler;
+await parSvc.ShipItemAsync(1, CancellationToken.None).ConfigureAwait(false);
+if (parCount != 1)
+    return Fail($"Parallel lifecycle phase 1 (subscribed): expected 1, got {parCount}");
+
+parSvc.ItemShipped -= parHandler;
+await parSvc.ShipItemAsync(2, CancellationToken.None).ConfigureAwait(false);
+if (parCount != 1)
+    return Fail($"Parallel lifecycle phase 2 (after unsubscribe): expected count still 1, got {parCount}");
+
+parSvc.ItemShipped += parHandler;
+await parSvc.ShipItemAsync(3, CancellationToken.None).ConfigureAwait(false);
+if (parCount != 2)
+    return Fail($"Parallel lifecycle phase 3 (after resubscribe): expected 2, got {parCount}");
 
 Console.WriteLine("AOT smoke: PASS");
 return 0;
