@@ -12,8 +12,8 @@ public class AsyncEventHandlerInvokeTests
 
         await handler.InvokeAsync("x");
 
-        Assert.Contains("x1", called);
-        Assert.Contains("x2", called);
+        Assert.Contains("x1", called, StringComparer.Ordinal);
+        Assert.Contains("x2", called, StringComparer.Ordinal);
     }
 
     [Fact]
