@@ -2,12 +2,14 @@ using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 
+using ZeroAlloc.TestHelpers;
+
 namespace ZeroAlloc.AsyncEvents.Generator.Tests;
 
 public class GeneratorTests
 {
     [Fact]
-    public Task FieldAttribute_Parallel_GeneratesEvent()
+    public void FieldAttribute_Parallel_GeneratesEvent()
         => Verify("""
             using ZeroAlloc.AsyncEvents;
             public partial class MyService
@@ -21,7 +23,7 @@ public class GeneratorTests
     // InvokeMode is a runtime property of AsyncEventHandler<T> (set on the field declaration),
     // not reflected in the generated add/remove accessors.
     [Fact]
-    public Task FieldAttribute_Sequential_GeneratesEvent()
+    public void FieldAttribute_Sequential_GeneratesEvent()
         => Verify("""
             using ZeroAlloc.AsyncEvents;
             public partial class MyService
@@ -32,7 +34,7 @@ public class GeneratorTests
             """);
 
     [Fact]
-    public Task ClassAttribute_AllHandlerFieldsGetEvents()
+    public void ClassAttribute_AllHandlerFieldsGetEvents()
         => Verify("""
             using ZeroAlloc.AsyncEvents;
             [AsyncEvent(InvokeMode.Parallel)]
@@ -46,7 +48,7 @@ public class GeneratorTests
     // "Overrides" here refers to parser logic: the field-level [AsyncEvent] is respected even when
     // the class also has [AsyncEvent]. The generated accessor is structurally the same as other cases.
     [Fact]
-    public Task FieldAttribute_OverridesClassAttribute()
+    public void FieldAttribute_OverridesClassAttribute()
         => Verify("""
             using ZeroAlloc.AsyncEvents;
             [AsyncEvent(InvokeMode.Parallel)]
@@ -58,7 +60,7 @@ public class GeneratorTests
             """);
 
     [Fact]
-    public Task ClassAttribute_MixedModes()
+    public void ClassAttribute_MixedModes()
         => Verify("""
             using ZeroAlloc.AsyncEvents;
             [AsyncEvent(InvokeMode.Parallel)]
@@ -71,7 +73,7 @@ public class GeneratorTests
             """);
 
     [Fact]
-    public Task NonPartialClass_NoOutput()
+    public void NonPartialClass_NoOutput()
         => Verify("""
             using ZeroAlloc.AsyncEvents;
             public class MyService
@@ -84,7 +86,7 @@ public class GeneratorTests
     // Verifies the parser guard: a field without [AsyncEvent] in a class without [AsyncEvent]
     // must not be included — guards against accidental removal of the attribute-presence check.
     [Fact]
-    public Task NoAttribute_NoOutput()
+    public void NoAttribute_NoOutput()
         => Verify("""
             using ZeroAlloc.AsyncEvents;
             public partial class MyService
@@ -93,12 +95,12 @@ public class GeneratorTests
             }
             """);
 
-    private static Task Verify(string source)
+    private static void Verify(string source)
     {
         var compilation = CreateCompilation(source);
         var generator = new AsyncEventGenerator();
         var driver = CSharpGeneratorDriver.Create(generator).RunGenerators(compilation);
-        return Verifier.Verify(driver).UseDirectory("Snapshots");
+        GeneratorSnapshot.Verify(driver);
     }
 
     private static CSharpCompilation CreateCompilation(string source)
