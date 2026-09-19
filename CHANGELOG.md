@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.3](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/compare/v1.1.2...v1.1.3) (2026-09-19)
+
+
+### Bug Fixes
+
+* **ci:** stamp the assembly version when publishing from a manifest ([#176](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/issues/176)) ([52d7178](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/commit/52d7178a3bacab443aceea7c7680285b76e7810f))
+
 ## [1.1.2](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/compare/v1.1.1...v1.1.2) (2026-05-28)
 
 
