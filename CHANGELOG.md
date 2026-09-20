@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.4](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/compare/v1.1.3...v1.1.4) (2026-09-20)
+
+
+### Bug Fixes
+
+* **ci:** pin the SDK floor at the .NET 10 GA band, not the newest patch ([#184](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/issues/184)) ([dad5768](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/commit/dad576852a7548faf22810a84710a2c182c15f46))
+
 ## [1.1.3](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/compare/v1.1.2...v1.1.3) (2026-09-19)
 
 
