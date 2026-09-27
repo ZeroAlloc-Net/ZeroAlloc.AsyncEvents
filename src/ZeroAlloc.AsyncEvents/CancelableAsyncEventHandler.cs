@@ -27,7 +27,7 @@ public struct CancelableAsyncEventHandler<TArgs> where TArgs : ICancelable
         return Interlocked.CompareExchange(ref _state, s, null) ?? s;
     }
 
-    public int Count => _state?.Callbacks.Length ?? 0;
+    public readonly int Count => _state?.Callbacks.Length ?? 0;
 
     public void Register(AsyncEvent<TArgs> callback)
     {
@@ -45,7 +45,7 @@ public struct CancelableAsyncEventHandler<TArgs> where TArgs : ICancelable
         while (Interlocked.CompareExchange(ref state.Callbacks, updated, current) != current);
     }
 
-    public void Unregister(AsyncEvent<TArgs> callback)
+    public readonly void Unregister(AsyncEvent<TArgs> callback)
     {
         var state = _state;
         if (state is null) return;
@@ -62,7 +62,7 @@ public struct CancelableAsyncEventHandler<TArgs> where TArgs : ICancelable
         while (Interlocked.CompareExchange(ref state.Callbacks, updated, current) != current);
     }
 
-    public ValueTask InvokeAsync(TArgs args, CancellationToken ct = default)
+    public readonly ValueTask InvokeAsync(TArgs args, CancellationToken ct = default)
     {
         var callbacks = _state?.Callbacks;
         if (callbacks is null || callbacks.Length == 0) return default;
@@ -73,7 +73,7 @@ public struct CancelableAsyncEventHandler<TArgs> where TArgs : ICancelable
         return InvokeParallelAsync(callbacks, args, ct);
     }
 
-    public ValueTask InvokeAsync(TArgs args, InvokeMode modeOverride, CancellationToken ct = default)
+    public readonly ValueTask InvokeAsync(TArgs args, InvokeMode modeOverride, CancellationToken ct = default)
     {
         var callbacks = _state?.Callbacks;
         if (callbacks is null || callbacks.Length == 0) return default;

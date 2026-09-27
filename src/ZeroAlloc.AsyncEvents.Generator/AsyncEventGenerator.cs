@@ -12,7 +12,6 @@ public sealed class AsyncEventGenerator : IIncrementalGenerator
 {
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
-#pragma warning disable EPS06 // IncrementalValuesProvider/IncrementalValueProvider are structs; hidden copies are unavoidable in the pipeline API
         var raw = context.SyntaxProvider
             .ForAttributeWithMetadataName(
                 "ZeroAlloc.AsyncEvents.AsyncEventAttribute",
@@ -23,7 +22,6 @@ public sealed class AsyncEventGenerator : IIncrementalGenerator
         var selected  = filtered.Select((m, _) => m!);
         var collected = selected.Collect();
         var models    = collected.SelectMany((items, _) => Deduplicate(items));
-#pragma warning restore EPS06
 
         context.RegisterSourceOutput(models, Emit);
     }
