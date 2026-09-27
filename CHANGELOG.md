@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.1.5](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/compare/v1.1.4...v1.1.5) (2026-09-27)
+
+
+### Bug Fixes
+
+* **ci:** pass the release version to the publish pack loop ([#206](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/issues/206)) ([1f06da9](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/commit/1f06da9cbd9583a9756b87b5e8dc930191ff0b97)), closes [#205](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/issues/205)
+
+
+### Code Refactoring
+
+* remove ErrorProne.NET, enforce readonly structs with IDE0250/IDE0251 ([#203](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/issues/203)) ([ee79a70](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/commit/ee79a709737a4c6e3e9314806330693b202af4a9))
+
 ## [1.1.4](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/compare/v1.1.3...v1.1.4) (2026-09-20)
 
 
