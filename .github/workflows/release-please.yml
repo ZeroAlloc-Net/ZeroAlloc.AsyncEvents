@@ -63,7 +63,7 @@ jobs:
               continue
             fi
             echo "Packing $csproj"
-            dotnet pack "$csproj" -c Release --no-build --output ./artifacts 
+            dotnet pack "$csproj" -c Release --no-build -p:Version=${{ needs.release-please.outputs.version }} --output ./artifacts
           done
           if ! ls ./artifacts/*.nupkg >/dev/null 2>&1; then
             echo "::error::no packages were produced"
