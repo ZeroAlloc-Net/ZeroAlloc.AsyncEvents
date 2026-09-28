@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.6](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/compare/v1.1.5...v1.1.6) (2026-09-28)
+
+
+### Bug Fixes
+
+* mark released public api as shipped and automate the move ([#209](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/issues/209)) ([fbcb104](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/commit/fbcb104d8ee269e0077e75bc29215d709cd7654a))
+
 ## [1.1.5](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/compare/v1.1.4...v1.1.5) (2026-09-27)
 
 
