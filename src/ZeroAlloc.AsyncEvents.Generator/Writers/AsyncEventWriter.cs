@@ -18,22 +18,33 @@ internal static class AsyncEventWriter
             sb.AppendLine();
         }
 
-        sb.AppendLine($"partial class {model.TypeName}");
-        sb.AppendLine("{");
+        // The containing types, outermost first, then the class itself.
+        var depth = model.Declarations.Count;
+        for (var level = 0; level < depth; level++)
+        {
+            var open = Indent(level);
+            sb.Append(open).AppendLine(model.Declarations[level]);
+            sb.Append(open).AppendLine("{");
+        }
 
+        var member = Indent(depth);
         foreach (var field in model.Fields)
         {
-            sb.AppendLine("    #pragma warning disable MA0046");
-            sb.AppendLine($"    public event global::ZeroAlloc.AsyncEvents.AsyncEvent<{field.ArgTypeFqn}> {field.EventName}");
-            sb.AppendLine("    {");
-            sb.AppendLine($"        add    => {field.FieldName}.Register(value);");
-            sb.AppendLine($"        remove => {field.FieldName}.Unregister(value);");
-            sb.AppendLine("    }");
-            sb.AppendLine("    #pragma warning restore MA0046");
+            sb.Append(member).AppendLine("#pragma warning disable MA0046");
+            sb.Append(member).AppendLine($"public event global::ZeroAlloc.AsyncEvents.AsyncEvent<{field.ArgTypeFqn}> {field.EventName}");
+            sb.Append(member).AppendLine("{");
+            sb.Append(member).AppendLine($"    add    => {field.FieldName}.Register(value);");
+            sb.Append(member).AppendLine($"    remove => {field.FieldName}.Unregister(value);");
+            sb.Append(member).AppendLine("}");
+            sb.Append(member).AppendLine("#pragma warning restore MA0046");
             sb.AppendLine();
         }
 
+        for (var level = depth - 1; level > 0; level--)
+            sb.Append(Indent(level)).AppendLine("}");
         sb.Append("}");
         return sb.ToString();
     }
+
+    private static string Indent(int level) => new(' ', level * 4);
 }

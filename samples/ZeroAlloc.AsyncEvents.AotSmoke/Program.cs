@@ -121,6 +121,18 @@ if (cancelCaught is null)
 if (cancelHandlerCount != 0)
     return Fail($"Cancellation: handler should not run when token pre-cancelled (got count {cancelHandlerCount})");
 
+// A generic class nested in another type gets its events generated into the real class.
+var feed = new Catalog.Feed<int>();
+var published = 0;
+feed.Published += (item, ct) =>
+{
+    published += item;
+    return ValueTask.CompletedTask;
+};
+await feed.PublishAsync(42, CancellationToken.None).ConfigureAwait(false);
+if (published != 42)
+    return Fail($"Nested generic class: expected 42, got {published}");
+
 Console.WriteLine("AOT smoke: PASS");
 return 0;
 
