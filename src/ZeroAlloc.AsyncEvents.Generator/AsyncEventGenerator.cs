@@ -26,24 +26,21 @@ public sealed class AsyncEventGenerator : IIncrementalGenerator
         context.RegisterSourceOutput(models, Emit);
     }
 
-    // Multiple triggers for same class (class attr + field attr) → deduplicate by namespace:type key
+    // Multiple triggers for same class (class attr + field attr) → deduplicate by the qualified name,
+    // which tells apart nested and generic types that share a simple name.
     private static IEnumerable<AsyncEventClassModel> Deduplicate(
         System.Collections.Immutable.ImmutableArray<AsyncEventClassModel> items)
     {
         var seen = new HashSet<string>(StringComparer.Ordinal);
         foreach (var m in items)
         {
-            var key = $"{m.Namespace}:{m.TypeName}";
-            if (seen.Add(key)) yield return m;
+            if (seen.Add(m.QualifiedName)) yield return m;
         }
     }
 
     private static void Emit(SourceProductionContext ctx, AsyncEventClassModel model)
     {
         var source = AsyncEventWriter.Write(model);
-        var hint = string.IsNullOrEmpty(model.Namespace)
-            ? $"{model.TypeName}.AsyncEvents.g.cs"
-            : $"{model.Namespace}_{model.TypeName}.AsyncEvents.g.cs";
-        ctx.AddSource(hint, source);
+        ctx.AddSource(HintNames.ForAsyncEvents(model.QualifiedName), source);
     }
 }
