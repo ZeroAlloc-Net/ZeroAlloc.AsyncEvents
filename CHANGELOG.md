@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.1.7](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/compare/v1.1.6...v1.1.7) (2026-09-30)
+
+
+### Bug Fixes
+
+* generate nested and generic classes with async events into the real class ([b70365f](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/commit/b70365f90d2ac032ad729f8394ab6a0fb913feeb))
+* name generated files after the class's namespace, containing types and arity ([#214](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/issues/214)) ([432a51b](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/commit/432a51b217d6f758aacbbcd92a255fc345ae7a89)), closes [#211](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/issues/211)
+* report classes whose names differ only in case instead of stopping the generator ([b70365f](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/commit/b70365f90d2ac032ad729f8394ab6a0fb913feeb))
+
 ## [1.1.6](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/compare/v1.1.5...v1.1.6) (2026-09-28)
 
 
