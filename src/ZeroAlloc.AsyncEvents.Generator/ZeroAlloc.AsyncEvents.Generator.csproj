@@ -18,6 +18,12 @@
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="5.9.0" PrivateAssets="all" />
   </ItemGroup>
   <ItemGroup>
+    <!-- Release tracking for the ZAAE diagnostics: RS2000-RS2008 read these, so a changed
+         severity or category, or a removed ID, on a shipped rule fails the build. -->
+    <AdditionalFiles Include="AnalyzerReleases.Shipped.md" />
+    <AdditionalFiles Include="AnalyzerReleases.Unshipped.md" />
+  </ItemGroup>
+  <ItemGroup>
     <InternalsVisibleTo Include="ZeroAlloc.AsyncEvents.Generator.Tests" />
   </ItemGroup>
 </Project>

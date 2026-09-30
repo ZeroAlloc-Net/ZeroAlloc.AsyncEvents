@@ -6,6 +6,22 @@ The `ZeroAlloc.AsyncEvents` package includes a Roslyn source generator that writ
 
 The declaring class must be `partial`.
 
+The class may be generic, and it may be nested in other types. A nested class gets its events
+generated into the real nested class: the generated file reopens every containing type as
+`partial`, outermost first, so each containing type must be `partial` too. Otherwise the generator
+reports [ZAAE001](diagnostics.md#zaae001) and generates nothing for the class. A `file` class cannot
+be extended by a generated file, and gets [ZAAE002](diagnostics.md#zaae002).
+
+```csharp
+public partial class Orders
+{
+    public partial class Service<TArgs>
+    {
+        [AsyncEvent] private AsyncEventHandler<TArgs> _changed;
+    }
+}
+```
+
 ## Field-level attribute
 
 Annotate individual `AsyncEventHandler<TArgs>` fields with `[AsyncEvent]`:
@@ -83,3 +99,4 @@ The event name is derived from the field name by stripping a leading `_` or `m_`
 - It does not generate the backing field — you declare and initialize it yourself.
 - It does not set `InvokeMode` on the field — you control that in the field initializer.
 - It does not generate for non-`partial` classes — they are silently skipped.
+- It does not generate for a nested class whose containing type is not `partial`, for a `file` class, or for a class whose name differs only in case from another's. Each of these is reported; see [Diagnostics](diagnostics.md).

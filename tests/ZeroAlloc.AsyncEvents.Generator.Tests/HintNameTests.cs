@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 
 namespace ZeroAlloc.AsyncEvents.Generator.Tests;
 
@@ -173,31 +171,5 @@ public class HintNameTests
         Assert.Equal("-uD835x", HintNames.Sanitize(mathBoldA.Substring(0, 1) + "x"));
     }
 
-    private static RunResult Run(string source)
-    {
-        var refs = new List<MetadataReference>(Basic.Reference.Assemblies.Net90.References.All);
-        refs.Add(MetadataReference.CreateFromFile(
-            typeof(ZeroAlloc.AsyncEvents.AsyncEventHandler<>).Assembly.Location));
-
-        var compilation = CSharpCompilation.Create(
-            "TestAssembly",
-            new[] { CSharpSyntaxTree.ParseText(source) },
-            refs,
-            new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
-
-        var driver = CSharpGeneratorDriver.Create(new AsyncEventGenerator())
-            .RunGeneratorsAndUpdateCompilation(compilation, out var output, out _);
-        // The driver runs exactly one generator.
-        var result = driver.GetRunResult().Results[0];
-
-        return new RunResult(
-            result.Exception,
-            result.GeneratedSources.Select(s => s.HintName).ToArray(),
-            output.GetDiagnostics().Where(d => d.Severity == DiagnosticSeverity.Error).ToArray());
-    }
-
-    private sealed record RunResult(
-        Exception? Exception,
-        IReadOnlyList<string> HintNames,
-        IReadOnlyList<Diagnostic> CompileErrors);
+    private static RunResult Run(string source) => GeneratorRunner.Run(source);
 }
