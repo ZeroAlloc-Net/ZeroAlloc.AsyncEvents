@@ -73,7 +73,7 @@ internal static class AsyncEventParser
             fields.Add(new AsyncEventFieldModel(field.Name, eventName, argTypeFqn));
         }
 
-        return fields.Count == 0 ? null : new AsyncEventClassModel(ns, type.Name, fields);
+        return fields.Count == 0 ? null : new AsyncEventClassModel(HintNames.QualifiedName(type), ns, type.Name, fields);
     }
 
     private static bool HasAttr(
