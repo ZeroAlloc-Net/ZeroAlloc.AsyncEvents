@@ -12,22 +12,33 @@ Zero-allocation async event handler structs for .NET. Lock-free registration, `V
 
 - **Lock-free registration** — CAS-loop register/unregister, no locks
 - **ValueTask throughout** — no `Task` allocations on hot paths
-- **ArrayPool parallel dispatch** — rented array for fan-out, returned immediately after `WhenAll`
+- **ArrayPool parallel dispatch** — handlers that complete synchronously cost nothing; only unfinished or failed ones go to a rented array and `WhenAll`
 - **Multi-target** — `netstandard2.0`, `netstandard2.1`, `net8.0`, `net10.0`
 - **AOT compatible**
 
 ## Performance
 
-10 handlers registered, invoked once. Compared against `EventHandler<T>` (sync multicast, baseline) and naive async (`Func<string, Task>` + `Task.WhenAll`). BenchmarkDotNet v0.14.0, .NET 9, X64 RyuJIT AVX2.
+10 handlers registered, invoked once, each returning a completed task. Compared against `EventHandler<T>` (sync multicast, baseline) and naive async (`Func<string, Task>` + `Task.WhenAll`). BenchmarkDotNet v0.15.8, X64 RyuJIT, Intel Core i9-12900HK, in-process toolchain.
+
+**net8.0**
 
 | Method | Mean | Error | StdDev | Ratio | Allocated |
 |---|---|---|---|---|---|
-| Sync_MulticastDelegate_10Handlers | 22.96 ns | 0.926 ns | 2.597 ns | 1.01 | — |
-| NaiveAsync_TaskWhenAll_10Handlers | 203.48 ns | 4.111 ns | 7.307 ns | 8.96x | 280 B |
-| ZeroAlloc_Parallel_10Handlers | 70.10 ns | 1.446 ns | 4.103 ns | 3.09x | 136 B |
-| ZeroAlloc_Sequential_10Handlers | 16.10 ns | 0.655 ns | 1.857 ns | 0.71x | — |
+| Sync_MulticastDelegate_10Handlers | 57.81 ns | 1.246 ns | 3.675 ns | 1.00 | — |
+| NaiveAsync_TaskWhenAll_10Handlers | 476.80 ns | 9.552 ns | 12.080 ns | 8.28x | 288 B |
+| ZeroAlloc_Parallel_10Handlers | 35.52 ns | 1.271 ns | 3.728 ns | 0.62x | — |
+| ZeroAlloc_Sequential_10Handlers | 47.75 ns | 0.350 ns | 0.328 ns | 0.83x | — |
 
-ZeroAlloc sequential mode is **30% faster than a sync multicast delegate** with zero allocations. ZeroAlloc parallel mode is **3× faster than naive async** with 51% less memory.
+**net10.0**
+
+| Method | Mean | Error | StdDev | Ratio | Allocated |
+|---|---|---|---|---|---|
+| Sync_MulticastDelegate_10Handlers | 40.69 ns | 0.501 ns | 0.444 ns | 1.00 | — |
+| NaiveAsync_TaskWhenAll_10Handlers | 440.47 ns | 20.112 ns | 59.300 ns | 10.83x | 280 B |
+| ZeroAlloc_Parallel_10Handlers | 18.31 ns | 1.093 ns | 3.207 ns | 0.45x | — |
+| ZeroAlloc_Sequential_10Handlers | 29.60 ns | 1.067 ns | 3.147 ns | 0.73x | — |
+
+Both ZeroAlloc modes allocate nothing on either target when handlers complete synchronously, and both are faster than a sync multicast delegate. Parallel mode is more than 10× faster than naive async, which allocates 280–288 B per call.
 
 ## Installation
 

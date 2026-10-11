@@ -8,7 +8,9 @@
 var handler = new AsyncEventHandler<string>(InvokeMode.Parallel);
 ```
 
-All handlers are started concurrently. An `ArrayPool<Task>` is rented for the fan-out, then returned after `Task.WhenAll`. Allocates 0 bytes on the heap when all handlers return synchronously.
+All handlers are started concurrently. A handler whose `ValueTask` has already completed successfully is consumed on the spot. Only the handlers that faulted, were cancelled or are still running are collected into an array rented from `ArrayPool<Task>` and awaited with `Task.WhenAll`; the array is returned afterwards. When every handler completes synchronously and successfully, no array is rented, `Task.WhenAll` is not called, and the call allocates 0 bytes on every target framework.
+
+If handlers fail, the invocation completes once every started handler has finished, and it throws the exception `Task.WhenAll` reports first: a handler that had already faulted when it returned comes ahead of one that faults later. A handler that throws before returning its `ValueTask` stops the fan-out, and later handlers are not started.
 
 **Use when:** handlers are independent and order doesn't matter. Most event scenarios.
 

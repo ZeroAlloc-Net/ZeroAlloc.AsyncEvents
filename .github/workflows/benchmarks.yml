@@ -33,15 +33,29 @@ env:
   DOTNET_CLI_TELEMETRY_OPTOUT: true
 
 jobs:
+  # The benchmark project targets the library's LTS frameworks, which compile different
+  # code paths, so each framework is run on its own.
   smoke:
     if: github.event_name != 'workflow_dispatch'
+    strategy:
+      fail-fast: false
+      matrix:
+        framework: [net8.0, net10.0]
     uses: ZeroAlloc-Net/.github/.github/workflows/benchmark-smoke.yml@main
     with:
       project: benchmarks/AsyncEvents.Benchmarks
+      framework: ${{ matrix.framework }}
+      dotnet-version: |
+        8.0.x
+        10.0.x
 
   full:
-    name: full
+    name: full (${{ matrix.framework }})
     if: github.event_name == 'workflow_dispatch'
+    strategy:
+      fail-fast: false
+      matrix:
+        framework: [net8.0, net10.0]
     runs-on: ubuntu-latest
     timeout-minutes: 90
     steps:
@@ -54,19 +68,22 @@ jobs:
           # that SDK at all and only works when the runner image happens to ship one
           # satisfying the pin, which is how a publish failed on a lagging image.
           global-json-file: global.json
-          dotnet-version: 10.0.x
+          dotnet-version: |
+            8.0.x
+            10.0.x
 
       - name: Build
-        run: dotnet build benchmarks/AsyncEvents.Benchmarks -c Release
+        run: dotnet build benchmarks/AsyncEvents.Benchmarks -c Release --framework ${{ matrix.framework }}
 
       - name: Run benchmarks
         run: |
-          dotnet run --project benchmarks/AsyncEvents.Benchmarks -c Release --no-build -- \
+          dotnet run --project benchmarks/AsyncEvents.Benchmarks -c Release --no-build \
+            --framework ${{ matrix.framework }} -- \
             --filter '${{ inputs.filter }}'
 
       - uses: actions/upload-artifact@v7
         if: always()
         with:
-          name: benchmarks
+          name: benchmarks-${{ matrix.framework }}
           path: '**/BenchmarkDotNet.Artifacts/**'
           if-no-files-found: warn
