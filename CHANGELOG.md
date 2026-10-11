@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.8](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/compare/v1.1.7...v1.1.8) (2026-10-11)
+
+
+### Performance Improvements
+
+* skip Task.WhenAll when every parallel handler completed synchronously ([#230](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/issues/230)) ([0f15880](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/commit/0f158801fe031e2304f156e736e030ad1d1e2d68)), closes [#229](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/issues/229)
+
 ## [1.1.7](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/compare/v1.1.6...v1.1.7) (2026-09-30)
 
 
