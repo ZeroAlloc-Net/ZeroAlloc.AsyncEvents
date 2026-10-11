@@ -70,7 +70,10 @@ jobs:
           # that SDK at all and only works when the runner image happens to ship one
           # satisfying the pin, which is how a publish failed on a lagging image.
           global-json-file: global.json
-          dotnet-version: '10.0.x'
+          # 8.0.x for the runtime: the tests run on both of the library's LTS targets.
+          dotnet-version: |
+            8.0.x
+            10.0.x
 
       - name: Restore dependencies
         run: dotnet restore

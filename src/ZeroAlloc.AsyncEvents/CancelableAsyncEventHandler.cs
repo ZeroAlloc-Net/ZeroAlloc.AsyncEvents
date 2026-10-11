@@ -1,4 +1,3 @@
-using System.Buffers;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -70,7 +69,7 @@ public struct CancelableAsyncEventHandler<TArgs> where TArgs : ICancelable
         if (_mode == InvokeMode.Sequential)
             return InvokeSequentialAsync(callbacks, args, ct);
 
-        return InvokeParallelAsync(callbacks, args, ct);
+        return ParallelDispatch.InvokeAsync(callbacks, args, ct);
     }
 
     public readonly ValueTask InvokeAsync(TArgs args, InvokeMode modeOverride, CancellationToken ct = default)
@@ -81,7 +80,7 @@ public struct CancelableAsyncEventHandler<TArgs> where TArgs : ICancelable
         if (modeOverride == InvokeMode.Sequential)
             return InvokeSequentialAsync(callbacks, args, ct);
 
-        return InvokeParallelAsync(callbacks, args, ct);
+        return ParallelDispatch.InvokeAsync(callbacks, args, ct);
     }
 
     private static async ValueTask InvokeSequentialAsync(AsyncEvent<TArgs>[] callbacks, TArgs args, CancellationToken ct)
@@ -91,29 +90,6 @@ public struct CancelableAsyncEventHandler<TArgs> where TArgs : ICancelable
             ct.ThrowIfCancellationRequested();
             if (args.Cancel) return;
             await cb(args, ct).ConfigureAwait(false);
-        }
-    }
-
-    private static async ValueTask InvokeParallelAsync(AsyncEvent<TArgs>[] callbacks, TArgs args, CancellationToken ct)
-    {
-        var count = callbacks.Length;
-        var tasks = ArrayPool<Task>.Shared.Rent(count);
-        try
-        {
-            for (var i = 0; i < count; i++)
-            {
-                ct.ThrowIfCancellationRequested();
-                tasks[i] = callbacks[i](args, ct).AsTask();
-            }
-#if NET10_0_OR_GREATER
-            await Task.WhenAll(new ReadOnlySpan<Task>(tasks, 0, count)).ConfigureAwait(false);
-#else
-            await Task.WhenAll(new ArraySegment<Task>(tasks, 0, count)).ConfigureAwait(false);
-#endif
-        }
-        finally
-        {
-            ArrayPool<Task>.Shared.Return(tasks, clearArray: true);
         }
     }
 
