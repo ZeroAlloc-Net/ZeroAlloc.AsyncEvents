@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.1.9](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/compare/v1.1.8...v1.1.9) (2026-10-15)
+
+
+### Tests
+
+* gate sequential invoke at zero allocations ([#237](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/issues/237)) ([7f61bc4](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/commit/7f61bc4fbc050da37c5e6569ec4e49253f91ab44))
+* make the two-pending-faults ordering test deterministic ([#240](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/issues/240)) ([70ad0b5](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/commit/70ad0b5a657e85397ba9d62935aabfc11899aa4f)), closes [#238](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/issues/238)
+
 ## [1.1.8](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/compare/v1.1.7...v1.1.8) (2026-10-11)
 
 
