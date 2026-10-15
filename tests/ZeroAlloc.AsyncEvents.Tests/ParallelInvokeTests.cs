@@ -158,8 +158,8 @@ public class ParallelInvokeTests
         Assert.Same(boom, thrown);
     }
 
-    // Task.WhenAll records faults in the order the tasks complete, not the order they were passed
-    // in, so a handler that had already faulted when it returned is reported ahead of one that
+    // Task.WhenAll records faults in the order it observes the tasks complete, not the order they
+    // were passed in, so a handler that had already faulted when it returned is reported ahead of one that
     // faults later, wherever each was registered.
     public static TheoryData<string, bool> KindsAndOrder => new()
     {
@@ -193,8 +193,14 @@ public class ParallelInvokeTests
         var calls = new List<int>();
         var early = new InvalidOperationException("early");
         var late = new NotSupportedException("late");
-        var first = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
-        var second = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+
+        // WhenAll learns that a task completed through a continuation on it. With
+        // RunContinuationsAsynchronously each SetException would queue that continuation to the
+        // thread pool, where the two can run in either order, so "first to complete" would not be
+        // the order the test faults them in. Without the option WhenAll observes each fault inside
+        // its SetException call, so it sees them in exactly that order.
+        var first = new TaskCompletionSource();
+        var second = new TaskCompletionSource();
         var invoke = Build(kind, Pending(calls, 1, first), Pending(calls, 2, second));
 
         var task = invoke(default).AsTask();
