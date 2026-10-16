@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.10](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/compare/v1.1.9...v1.1.10) (2026-10-16)
+
+
+### Documentation
+
+* rewrite the readme as a product page ([#244](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/issues/244)) ([c0bac24](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/commit/c0bac24c85cb5ebaed40bdeed3c69db1ecb18dd0))
+
 ## [1.1.9](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/compare/v1.1.8...v1.1.9) (2026-10-15)
 
 
