@@ -15,6 +15,11 @@ public class CancelableEventHandlerBenchmarks
     private CancelableAsyncEventHandler<CancelEventArgs> _noCancelSequential;
     private CancelableAsyncEventHandler<CancelEventArgs> _cancelAtFirstSequential;
 
+    // One args instance per benchmark, reset before each call, so the measurement covers the
+    // dispatch and not the caller's own args allocation.
+    private readonly CancelEventArgs _noCancelArgs = new();
+    private readonly CancelEventArgs _cancelAtFirstArgs = new();
+
     [GlobalSetup]
     public void Setup()
     {
@@ -40,9 +45,12 @@ public class CancelableEventHandlerBenchmarks
 
     [Benchmark]
     public ValueTask Sequential_NoCancel_10Handlers()
-        => _noCancelSequential.InvokeAsync(new CancelEventArgs());
+        => _noCancelSequential.InvokeAsync(_noCancelArgs);
 
     [Benchmark]
     public ValueTask Sequential_CancelAtFirst_10Handlers()
-        => _cancelAtFirstSequential.InvokeAsync(new CancelEventArgs());
+    {
+        _cancelAtFirstArgs.Cancel = false;
+        return _cancelAtFirstSequential.InvokeAsync(_cancelAtFirstArgs);
+    }
 }
