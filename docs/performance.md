@@ -2,38 +2,79 @@
 
 ## Methodology
 
-Benchmarks run with [BenchmarkDotNet](https://benchmarkdotnet.org/) v0.15.8, Release configuration, MemoryDiagnoser enabled. The benchmark project targets the library's LTS frameworks, net8.0 and net10.0, which compile different parallel-dispatch code, so run it once per framework.
+Measured 2026-10-17 with [BenchmarkDotNet](https://benchmarkdotnet.org/) v0.15.8, Release
+configuration, `MemoryDiagnoser` enabled, on an otherwise idle machine:
 
-10 handlers registered per scenario. Each handler returns `ValueTask.CompletedTask` / `Task.CompletedTask` to isolate dispatch overhead.
+```
+BenchmarkDotNet v0.15.8, Windows 11 (10.0.26300.9711)
+12th Gen Intel Core i9-12900HK 2.50GHz, 1 CPU, 20 logical and 14 physical cores
+.NET SDK 10.0.402
+  net10.0 : .NET 10.0.13 (10.0.13, 10.0.1326.50504), X64 RyuJIT x86-64-v3
+  net8.0  : .NET 8.0.32 (8.0.32, 8.0.3226.50405), X64 RyuJIT x86-64-v3
+```
+
+> Allocations are exact. Speed is shown as same-run ratios; absolute timings are not published.
+
+Each benchmark ran out of process in three launches, pinned to two performance cores
+(`--affinity 20`). `Ratio` is each row's mean time relative to the class baseline in the same run;
+`Launch range` is the lowest and highest ratio of the three launches. The benchmark project targets
+the library's LTS frameworks, net8.0 and net10.0, which compile different parallel-dispatch code, so
+it runs once per framework.
+
+10 handlers are registered per scenario. Each handler returns `ValueTask.CompletedTask` /
+`Task.CompletedTask` to isolate dispatch overhead.
 
 Run yourself:
 
 ```bash
-dotnet run --project benchmarks/AsyncEvents.Benchmarks -c Release -f net8.0 -- --filter "*EventHandlerComparison*"
-dotnet run --project benchmarks/AsyncEvents.Benchmarks -c Release -f net10.0 -- --filter "*EventHandlerComparison*"
+dotnet run --project benchmarks/AsyncEvents.Benchmarks -c Release -f net8.0 -- --filter "*" --launchCount 3
+dotnet run --project benchmarks/AsyncEvents.Benchmarks -c Release -f net10.0 -- --filter "*" --launchCount 3
 ```
 
-## Framework Comparison (10 handlers)
+## Framework comparison (10 handlers)
 
-**net8.0**
-
-| Method | Mean | Error | StdDev | Ratio | Allocated |
-|---|---|---|---|---|---|
-| Sync_MulticastDelegate_10Handlers | 57.81 ns | 1.246 ns | 3.675 ns | 1.00 | — |
-| NaiveAsync_TaskWhenAll_10Handlers | 476.80 ns | 9.552 ns | 12.080 ns | 8.28x | 288 B |
-| ZeroAlloc_Parallel_10Handlers | 35.52 ns | 1.271 ns | 3.728 ns | 0.62x | — |
-| ZeroAlloc_Sequential_10Handlers | 47.75 ns | 0.350 ns | 0.328 ns | 0.83x | — |
+The baseline is a synchronous multicast `EventHandler<T>`.
 
 **net10.0**
 
-| Method | Mean | Error | StdDev | Ratio | Allocated |
-|---|---|---|---|---|---|
-| Sync_MulticastDelegate_10Handlers | 40.69 ns | 0.501 ns | 0.444 ns | 1.00 | — |
-| NaiveAsync_TaskWhenAll_10Handlers | 440.47 ns | 20.112 ns | 59.300 ns | 10.83x | 280 B |
-| ZeroAlloc_Parallel_10Handlers | 18.31 ns | 1.093 ns | 3.207 ns | 0.45x | — |
-| ZeroAlloc_Sequential_10Handlers | 29.60 ns | 1.067 ns | 3.147 ns | 0.73x | — |
+| Method | Ratio | Launch range | Allocated |
+|---|---:|---:|---:|
+| Sync_MulticastDelegate_10Handlers | 1.00 | | 0 B |
+| NaiveAsync_TaskWhenAll_10Handlers | 11.93 | 10.08–13.03 | 280 B |
+| ZeroAlloc_Parallel_10Handlers | 0.44 | 0.43–0.45 | 0 B |
+| ZeroAlloc_Sequential_10Handlers | 0.61 | 0.52–0.89 | 0 B |
 
-Both ZeroAlloc modes allocate nothing on either target when handlers complete synchronously, and both are faster than a sync multicast delegate. Parallel mode is more than 10× faster than naive async, which allocates 280–288 B per call.
+**net8.0**
+
+| Method | Ratio | Launch range | Allocated |
+|---|---:|---:|---:|
+| Sync_MulticastDelegate_10Handlers | 1.00 | | 0 B |
+| NaiveAsync_TaskWhenAll_10Handlers | 6.11 | 5.83–6.63 | 288 B |
+| ZeroAlloc_Parallel_10Handlers | 0.53 | 0.48–0.57 | 0 B |
+| ZeroAlloc_Sequential_10Handlers | 0.56 | 0.54–0.59 | 0 B |
+
+Both ZeroAlloc modes allocate nothing on either target when handlers complete synchronously, and
+both are faster than a sync multicast delegate. Parallel mode is 11–27× faster than naive async in
+the same run, which allocates 280–288 B per call.
+
+## Cancelable events (10 handlers)
+
+`CancelableAsyncEventHandler<T>` in sequential mode against a plain `AsyncEventHandler<T>` in
+sequential mode. The args object is created once and reused, so the numbers cover dispatch only.
+
+| Method | net10.0 Ratio | net10.0 Launch range | net8.0 Ratio | net8.0 Launch range | Allocated |
+|---|---:|---:|---:|---:|---:|
+| Sequential_Baseline_10Handlers | 1.00 | | 1.00 | | 0 B |
+| Sequential_NoCancel_10Handlers | 1.05 | 0.97–1.09 | 1.01 | 0.91–1.07 | 0 B |
+| Sequential_CancelAtFirst_10Handlers | 1.19 | 1.17–1.22 | 1.13 | 1.08–1.18 | 0 B |
+
+Checking `Cancel` before each handler costs at most a few percent over plain sequential dispatch,
+and the cancelable handler allocates nothing whether or not a handler cancels.
+
+## Parallel and sequential dispatch
+
+`AsyncEventHandlerBenchmarks` measures each mode on its own, with no baseline: **0 B** per call for
+both modes on net8.0 and net10.0.
 
 ## Allocation notes
 

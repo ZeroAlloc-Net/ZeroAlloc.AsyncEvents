@@ -68,14 +68,14 @@ public partial class OrderService
 
 ## Performance
 
-Ten handlers, each returning a completed task, invoked once. net10.0, BenchmarkDotNet, same run; the ratio is against a synchronous multicast delegate.
+Ten handlers, each returning a completed task, invoked once. net10.0, BenchmarkDotNet, same run; the ratio is against a synchronous multicast delegate. Allocations are exact; speed is a same-run ratio.
 
 | Method | Ratio | Allocated |
 |---|---|---|
-| `EventHandler<T>`, sync multicast | 1.00 | — |
-| `Func<T, Task>` + `Task.WhenAll` | 10.83x | 280 B |
-| ZeroAlloc.AsyncEvents, parallel | 0.45x | — |
-| ZeroAlloc.AsyncEvents, sequential | 0.73x | — |
+| `EventHandler<T>`, sync multicast | 1.00 | 0 B |
+| `Func<T, Task>` + `Task.WhenAll` | 11.93 | 280 B |
+| ZeroAlloc.AsyncEvents, parallel | 0.44 | 0 B |
+| ZeroAlloc.AsyncEvents, sequential | 0.61 | 0 B |
 
 Full results for net8.0 and net10.0, methodology and allocation notes: [docs/performance.md](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/blob/main/docs/performance.md).
 
