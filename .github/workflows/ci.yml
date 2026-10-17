@@ -10,6 +10,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write   # Codecov upload via OIDC, no token secret
 
     steps:
       - uses: actions/checkout@v7
@@ -44,7 +47,16 @@ jobs:
         run: dotnet build --no-restore -c Release /p:Version=${{ steps.gitversion.outputs.fullSemVer }}
 
       - name: Test
-        run: dotnet test --no-build -c Release
+        run: dotnet test --no-build -c Release --settings coverage.runsettings --results-directory TestResults
+
+      - name: Upload coverage to Codecov
+        if: '!cancelled()'
+        uses: codecov/codecov-action@v5
+        with:
+          use_oidc: true
+          files: "TestResults/**/coverage.cobertura.xml"
+          disable_search: true   # only the files above, not every *.xml the search finds
+          fail_ci_if_error: false
 
       - name: Pack
         run: dotnet pack src/ZeroAlloc.AsyncEvents/ZeroAlloc.AsyncEvents.csproj --no-build -c Release /p:Version=${{ steps.gitversion.outputs.fullSemVer }} -o ./artifacts
