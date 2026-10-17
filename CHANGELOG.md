@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.11](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/compare/v1.1.10...v1.1.11) (2026-10-17)
+
+
+### Documentation
+
+* re-run the benchmarks pinned, with three launches ([#257](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/issues/257)) ([64828d8](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/commit/64828d82d38c1b956ee858443220c6ec5fd67494))
+
 ## [1.1.10](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/compare/v1.1.9...v1.1.10) (2026-10-16)
 
 
