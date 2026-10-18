@@ -5,7 +5,7 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="ZeroAlloc.TestHelpers" Version="1.7.*" />
+    <PackageReference Include="ZeroAlloc.TestHelpers" Version="1.8.*" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.10.1" />
     <PackageReference Include="coverlet.collector" Version="10.1.0">
       <PrivateAssets>all</PrivateAssets>
