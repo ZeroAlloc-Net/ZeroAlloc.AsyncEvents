@@ -74,7 +74,7 @@ public class GeneratorTests
 
     [Fact]
     public void NonPartialClass_NoOutput()
-        => Verify("""
+        => AssertNoOutput("""
             using ZeroAlloc.AsyncEvents;
             public class MyService
             {
@@ -87,7 +87,7 @@ public class GeneratorTests
     // must not be included — guards against accidental removal of the attribute-presence check.
     [Fact]
     public void NoAttribute_NoOutput()
-        => Verify("""
+        => AssertNoOutput("""
             using ZeroAlloc.AsyncEvents;
             public partial class MyService
             {
@@ -101,6 +101,15 @@ public class GeneratorTests
         var generator = new AsyncEventGenerator();
         var driver = CSharpGeneratorDriver.Create(generator).RunGenerators(compilation);
         GeneratorSnapshot.Verify(driver);
+    }
+
+    // GeneratorSnapshot.Verify rejects an empty run, so no-output cases assert that directly.
+    private static void AssertNoOutput(string source)
+    {
+        var compilation = CreateCompilation(source);
+        var generator = new AsyncEventGenerator();
+        var result = CSharpGeneratorDriver.Create(generator).RunGenerators(compilation).GetRunResult();
+        Assert.Empty(result.GeneratedTrees);
     }
 
     private static CSharpCompilation CreateCompilation(string source)
