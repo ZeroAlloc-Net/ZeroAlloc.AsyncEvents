@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.12](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/compare/v1.1.11...v1.1.12) (2026-10-30)
+
+
+### Tests
+
+* assert empty generator runs directly ([#269](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/issues/269)) ([83c17d1](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/commit/83c17d1715174387e4896e61370a13f72e6d8211))
+
 ## [1.1.11](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/compare/v1.1.10...v1.1.11) (2026-10-18)
 
 
