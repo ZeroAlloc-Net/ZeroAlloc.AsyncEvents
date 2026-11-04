@@ -67,3 +67,34 @@ jobs:
       dry-run: ${{ inputs.dry-run }}
     secrets:
       NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+
+  # The CycloneDX SBOM of the rescued release, as release-please.yml attaches it after a normal release. --clobber
+  # in the action replaces an SBOM that is already there. A dry run writes the file and attaches nothing.
+  sbom:
+    needs: resolve
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ needs.resolve.outputs.tag }}
+          persist-credentials: false
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v6
+        with:
+          global-json-file: global.json
+          dotnet-version: |
+            8.0.x
+            10.0.x
+
+      - name: Build the release
+        run: dotnet build ZeroAlloc.AsyncEvents.slnx -c Release -p:Version=${{ needs.resolve.outputs.version }}
+
+      - name: Attach the SBOM to the GitHub release
+        uses: MarcelRoozekrans/ci-baseline/actions/sbom@v1
+        with:
+          solution: ZeroAlloc.AsyncEvents.slnx
+          tag: ${{ needs.resolve.outputs.tag }}
+          upload: ${{ !inputs.dry-run }}
