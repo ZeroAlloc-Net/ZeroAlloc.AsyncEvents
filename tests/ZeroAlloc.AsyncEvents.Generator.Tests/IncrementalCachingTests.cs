@@ -23,7 +23,7 @@ public class IncrementalCachingTests
     public void EditToAnotherClass_LeavesTheModelUnchanged(string declaration)
     {
         var parseOptions = new CSharpParseOptions(LanguageVersion.Latest);
-        var refs = new List<MetadataReference>(Basic.Reference.Assemblies.Net90.References.All)
+        var refs = new List<MetadataReference>(TestReferences.All)
         {
             MetadataReference.CreateFromFile(typeof(ZeroAlloc.AsyncEvents.AsyncEventHandler<>).Assembly.Location),
         };

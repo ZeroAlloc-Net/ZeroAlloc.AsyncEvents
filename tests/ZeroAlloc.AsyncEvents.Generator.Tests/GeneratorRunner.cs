@@ -14,7 +14,7 @@ internal static class GeneratorRunner
 
     public static RunResult Run(params (string Path, string Source)[] files)
     {
-        var refs = new List<MetadataReference>(Basic.Reference.Assemblies.Net90.References.All);
+        var refs = new List<MetadataReference>(TestReferences.All);
         refs.Add(MetadataReference.CreateFromFile(
             typeof(ZeroAlloc.AsyncEvents.AsyncEventHandler<>).Assembly.Location));
 

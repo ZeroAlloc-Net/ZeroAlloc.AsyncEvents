@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <!-- netstandard for broad compat; net8/net10 are LTS-only concrete targets (net9 STS omitted by policy) -->
-    <TargetFrameworks>netstandard2.0;netstandard2.1;net8.0;net10.0</TargetFrameworks>
+    <!-- netstandard for broad compat; net8/net10 are the LTS concrete targets (net9 STS omitted by policy); net11 is added to track the upcoming LTS -->
+    <TargetFrameworks>netstandard2.0;netstandard2.1;net8.0;net10.0;net11.0</TargetFrameworks>
     <PackageId>ZeroAlloc.AsyncEvents</PackageId>
     <Description>Zero-allocation async event handler structs and async INotify* interfaces for .NET. Lock-free registration, ValueTask invocation, ArrayPool parallel dispatch.</Description>
     <Version>0.0.0-local</Version>
