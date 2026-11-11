@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <!-- The library's LTS targets: net8.0 runs its pre-net10 code paths, net10.0 its span-based ones. -->
+    <!-- The library's LTS targets: net8.0 runs its pre-net10 code paths, net10.0 its span-based ones. net11.0 is not benchmarked: BenchmarkDotNet has no stable release that supports it. -->
     <TargetFrameworks>net8.0;net10.0</TargetFrameworks>
     <OutputType>Exe</OutputType>
     <IsPackable>false</IsPackable>

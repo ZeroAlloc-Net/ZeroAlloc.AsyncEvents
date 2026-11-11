@@ -11,7 +11,7 @@ Async events for .NET that you can actually `await`: a drop-in replacement for `
 
 ## Why ZeroAlloc.AsyncEvents
 
-- **0 B per invocation.** Raising an event whose handlers complete synchronously allocates nothing, in parallel and in sequential mode; tests assert it on net8.0 and net10.0. Naive async allocates 280–288 B per call.
+- **0 B per invocation.** Raising an event whose handlers complete synchronously allocates nothing, in parallel and in sequential mode; tests assert it on net8.0, net10.0 and net11.0. Naive async allocates 280–288 B per call.
 - **More than 10× faster than `Task.WhenAll` fan-out**, and faster than a plain synchronous multicast delegate, measured in the same run.
 - **Real `async` semantics.** Handlers return `ValueTask`, receive a `CancellationToken`, and run in parallel or in registration order. Exceptions reach the caller instead of vanishing in an `async void`.
 - **Works under NativeAOT and trimming.** No reflection; CI publishes and runs a NativeAOT sample on every build.
@@ -63,7 +63,7 @@ public partial class OrderService
 - **Cancelable events.** A handler sets `Cancel` and the remaining handlers are skipped, for validation and veto pipelines. [Cancelable events](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/blob/main/docs/cancel-events.md)
 - **Generated `event` accessors** with `[AsyncEvent]` on a field or on the whole class. Mistakes are reported at compile time. [Source generator](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/blob/main/docs/source-generator.md), [diagnostics](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/blob/main/docs/diagnostics.md)
 - **Lock-free, thread-safe subscription.** Registering and unregistering never takes a lock.
-- **Broad reach:** `netstandard2.0`, `netstandard2.1`, `net8.0` and `net10.0`.
+- **Broad reach:** `netstandard2.0`, `netstandard2.1`, `net8.0`, `net10.0` and `net11.0`.
 - **Async property and collection notifications**, the async `INotifyPropertyChanged` family, come from [ZeroAlloc.Notify](https://github.com/ZeroAlloc-Net/ZeroAlloc.Notify), which builds on this package.
 
 ## Performance
