@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.1](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/compare/v1.2.0...v1.2.1) (2026-11-16)
+
+
+### Bug Fixes
+
+* embed PDBs so Go to Definition shows the package source ([#300](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/issues/300)) ([5fcf4ec](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/commit/5fcf4ec88e7d920ed86497fc6aed9ed24433ee99))
+
 ## [1.2.0](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/compare/v1.1.12...v1.2.0) (2026-11-11)
 
 
