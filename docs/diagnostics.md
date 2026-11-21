@@ -5,7 +5,7 @@ the class it points at. Every other class in the project is still generated.
 
 | ID | Severity | Title |
 |----|----------|-------|
-| [ZAAE001](#zaae001) | Warning | Containing type of a class with async events is not partial |
+| [ZAAE001](#zaae001) | Error | Containing type of a class with async events is not partial |
 | [ZAAE002](#zaae002) | Error | File-local class with async events is not generated |
 | [ZAAE003](#zaae003) | Error | Class name differs only in case from another class with async events |
 
@@ -15,7 +15,7 @@ the class it points at. Every other class in the project is still generated.
 
 A class nested in another type gets its events generated into the real nested class. To do that,
 the generated file reopens every containing type as `partial`, so each containing type has to be
-declared `partial`. When one is not, the generator reports ZAAE001 on the class, naming the
+declared `partial`. When one is not, the generator reports the error ZAAE001 on the class, naming the
 outermost containing type that is not partial, and generates nothing for it.
 
 ```csharp
