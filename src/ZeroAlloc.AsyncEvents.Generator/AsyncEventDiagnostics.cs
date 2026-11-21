@@ -20,7 +20,7 @@ internal static class AsyncEventDiagnostics
         title: "Containing type of a class with async events is not partial",
         messageFormat: "The async events of class '{0}' are not generated because its containing type '{1}' is not partial",
         category: Category,
-        defaultSeverity: DiagnosticSeverity.Warning,
+        defaultSeverity: DiagnosticSeverity.Error,
         isEnabledByDefault: true,
         helpLinkUri: HelpLink + "zaae001");
 

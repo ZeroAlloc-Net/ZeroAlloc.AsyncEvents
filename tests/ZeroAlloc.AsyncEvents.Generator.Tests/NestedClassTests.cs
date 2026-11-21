@@ -276,7 +276,8 @@ public class NestedClassTests
 
         var diagnostic = run.OnlyDiagnostic();
         Assert.Equal("ZAAE001", diagnostic.Id);
-        Assert.Equal(DiagnosticSeverity.Warning, diagnostic.Severity);
+        // An error, not a warning: nothing is generated, so the build must not pass quietly.
+        Assert.Equal(DiagnosticSeverity.Error, diagnostic.Severity);
         Assert.Equal(
             "The async events of class 'N.Outer.Foo' are not generated because its containing type 'N.Outer' is not partial",
             diagnostic.GetMessage(System.Globalization.CultureInfo.InvariantCulture));
@@ -307,6 +308,7 @@ public class NestedClassTests
 
         var diagnostic = run.OnlyDiagnostic();
         Assert.Equal("ZAAE001", diagnostic.Id);
+        Assert.Equal(DiagnosticSeverity.Error, diagnostic.Severity);
         Assert.Equal(
             "The async events of class 'N.Outer.Middle.Foo' are not generated because its containing type 'N.Outer' is not partial",
             diagnostic.GetMessage(System.Globalization.CultureInfo.InvariantCulture));

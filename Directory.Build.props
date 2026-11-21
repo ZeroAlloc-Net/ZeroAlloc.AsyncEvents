@@ -70,7 +70,7 @@
     <RepositoryType>git</RepositoryType>
     <PackageIcon>icon.png</PackageIcon>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageTags>async;events;notify;inotifypropertychanged;zeroalloc;performance</PackageTags>
+    <PackageTags>async;events;asyncevents;valuetask;zeroalloc;performance</PackageTags>
   </PropertyGroup>
   <!-- Debugging into the package: Go to Definition and step-into show the original source.
        The PDB is embedded in each DLL, so consumers need no symbol server setting; Source Link,

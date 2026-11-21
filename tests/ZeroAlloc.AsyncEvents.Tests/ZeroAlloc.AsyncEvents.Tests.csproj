@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <!-- The library's concrete targets, so its net8.0, net10.0 and net11.0 builds are tested. -->
-    <TargetFrameworks>net8.0;net10.0;net11.0</TargetFrameworks>
+    <!-- The library's targets, so its net10.0 and net11.0 builds are both tested. -->
+    <TargetFrameworks>net10.0;net11.0</TargetFrameworks>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="ZeroAlloc.TestHelpers" Version="1.10.*" />

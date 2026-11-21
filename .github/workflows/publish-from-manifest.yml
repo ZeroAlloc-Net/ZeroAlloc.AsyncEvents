@@ -58,7 +58,6 @@ jobs:
       solution: ZeroAlloc.AsyncEvents.slnx
       # Runtimes the tests target, besides the SDK global.json pins.
       dotnet-version: |
-        8.0.x
         10.0.x
         11.0.x
       # This repository does not publish to GitHub Packages
@@ -106,9 +105,8 @@ jobs:
         uses: actions/setup-dotnet@v6
         with:
           global-json-file: global.json
-          dotnet-version: |
-            8.0.x
-            10.0.x
+          # The build needs no extra runtime; 10.0.x matches ci.yml.
+          dotnet-version: 10.0.x
 
       - name: Build the release
         run: dotnet build ZeroAlloc.AsyncEvents.slnx -c Release -p:Version=${{ needs.resolve.outputs.version }}

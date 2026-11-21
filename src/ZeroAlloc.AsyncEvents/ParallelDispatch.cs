@@ -17,9 +17,8 @@ internal static class ParallelDispatch
     /// A callback whose <see cref="ValueTask"/> has already completed successfully is consumed on
     /// the spot and never becomes a <see cref="Task"/>. When every callback completes that way, no
     /// pool array is rented and <see cref="Task.WhenAll(Task[])"/> is never called, so the call
-    /// allocates nothing on any target. Below net10.0 the only <c>WhenAll</c> overload that takes a
-    /// slice of an array is the <c>IEnumerable&lt;Task&gt;</c> one, which boxes the segment, copies
-    /// it and allocates a promise even when every task has finished.
+    /// allocates nothing. The pending callbacks go to the <c>ReadOnlySpan&lt;Task&gt;</c> overload of
+    /// <c>WhenAll</c>, which reads the slice of the pool array without copying it.
     /// <para>
     /// Every other callback, faulted, cancelled or still pending, goes to <c>WhenAll</c> in
     /// registration order exactly as before. A successful task contributes no exception and no
@@ -52,11 +51,7 @@ internal static class ParallelDispatch
 
             if (tasks is null) return;
 
-#if NET10_0_OR_GREATER
             await Task.WhenAll(new ReadOnlySpan<Task>(tasks, 0, pending)).ConfigureAwait(false);
-#else
-            await Task.WhenAll(new ArraySegment<Task>(tasks, 0, pending)).ConfigureAwait(false);
-#endif
         }
         finally
         {
