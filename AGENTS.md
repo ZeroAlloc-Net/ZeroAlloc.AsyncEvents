@@ -10,9 +10,7 @@ fields marked `[AsyncEvent]`. One package ships: `ZeroAlloc.AsyncEvents`.
 - `src/ZeroAlloc.AsyncEvents.Generator` is `netstandard2.0` and `IsPackable=false`. It ships inside the
   library nupkg under `analyzers/dotnet/cs` through the `IncludeGeneratorInPackage` target in the library
   csproj. Never pack it on its own.
-- The library targets `netstandard2.0;netstandard2.1;net8.0;net10.0;net11.0`. `Polyfills.cs` and the
-  `System.Buffers` and `System.Threading.Tasks.Extensions` references exist only for `netstandard2.0`.
-  Code must compile on all five targets.
+- The library targets `net10.0;net11.0`, with no polyfills. Code must compile on both targets.
 - `tests/ZeroAlloc.AsyncEvents.Generator.Tests/Snapshots/*.verified.cs` are Verify snapshots of generated
   output. They are data: the test csproj removes `*.verified.*` from compilation. A generator change
   that alters output means updating them on purpose, never accepting `*.received.*` blindly.
@@ -25,8 +23,8 @@ fields marked `[AsyncEvent]`. One package ships: `ZeroAlloc.AsyncEvents`.
 `global.json` pins SDK 11.0.100 with `rollForward: latestFeature`, so the .NET 11 SDK is required. Test
 runtimes by project:
 
-- `ZeroAlloc.AsyncEvents.Tests` targets `net8.0;net10.0;net11.0`: needs the .NET 8, 10 and 11 runtimes.
-- `ZeroAlloc.AsyncEvents.Generator.Tests` targets `net9.0;net11.0`: needs the .NET 9 and 11 runtimes.
+- `ZeroAlloc.AsyncEvents.Tests` targets `net10.0;net11.0`: needs the .NET 10 and 11 runtimes.
+- `ZeroAlloc.AsyncEvents.Generator.Tests` targets `net10.0;net11.0`: needs the .NET 10 and 11 runtimes.
 
 CI job `build` in `.github/workflows/ci.yml`, `$VERSION` being the GitVersion `fullSemVer`:
 
@@ -48,7 +46,7 @@ dotnet publish samples/ZeroAlloc.AsyncEvents.AotSmoke/ZeroAlloc.AsyncEvents.AotS
 Fast inner loop, run in this repo and passing:
 
 ```bash
-dotnet test tests/ZeroAlloc.AsyncEvents.Tests -c Release -f net8.0 --filter "FullyQualifiedName~SequentialInvokeAllocationTests"
+dotnet test tests/ZeroAlloc.AsyncEvents.Tests -c Release -f net10.0 --filter "FullyQualifiedName~SequentialInvokeAllocationTests"
 ```
 
 The `Release` build sets `TreatWarningsAsErrors`, so analyzer warnings from Meziantou, Roslynator and
@@ -75,7 +73,7 @@ ZeroAlloc.Analyzers fail the build. Fix them, do not suppress them.
   Generated accessors and the library must stay reflection-free.
 - CI gates line coverage at 80 percent through `coverage-gate`. Generated and `*.g.cs` code, test and
   benchmark assemblies are excluded in `coverage.runsettings`.
-- The benchmark project targets only `net8.0` and `net10.0`: BenchmarkDotNet has no stable `net11.0`
+- The benchmark project targets only `net10.0`: BenchmarkDotNet has no stable `net11.0`
   support. The `smoke` job in `benchmarks.yml` proves every benchmark still runs.
 
 <!-- org-core:start sha256=8faf417fa86f11bd8ad9bc98dfa4683fba44e440291e84c6cb9b0ec3ca0c0e7e (generated from docker-nuc scripts/agents-md/org-core-zeroalloc.md; do not edit here) -->
