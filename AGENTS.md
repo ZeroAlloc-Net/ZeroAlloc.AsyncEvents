@@ -61,9 +61,11 @@ ZeroAlloc.Analyzers fail the build. Fix them, do not suppress them.
   new public member goes into `src/ZeroAlloc.AsyncEvents/PublicAPI.Unshipped.txt`. Never edit
   `PublicAPI.Shipped.txt` by hand: release automation moves entries across, and the `api-compat` and
   `release-tracking` jobs in `ci.yml` check it.
-- Generator diagnostics (`ZAAE001` to `ZAAE003`) are tracked in `src/ZeroAlloc.AsyncEvents.Generator/AnalyzerReleases.Unshipped.md`.
-  A new diagnostic needs an entry there and a section in `docs/diagnostics.md`. Changing the severity or
-  category of a shipped rule, or removing its ID, fails the build (RS2000 to RS2008).
+- Generator diagnostics (`ZAAE001` to `ZAAE003`) are tracked in `AnalyzerReleases.Shipped.md` and
+  `AnalyzerReleases.Unshipped.md` under `src/ZeroAlloc.AsyncEvents.Generator/`. A new diagnostic goes under
+  New Rules in the Unshipped file and needs a section in `docs/diagnostics.md`. A severity or category
+  change to a shipped rule goes under Changed Rules there, and removing a shipped ID under Removed Rules.
+  Without that entry the build fails with RS2000 to RS2008.
 - Generator code must stay incremental: models in `Models/` are equatable (`EquatableArray`) and carry no
   `Compilation` or `ISymbol` references. `IncrementalCachingTests` guards this.
 - The zero-allocation claim is asserted by tests on every target (`SequentialInvokeAllocationTests`,

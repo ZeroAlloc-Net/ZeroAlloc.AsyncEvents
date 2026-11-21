@@ -3,7 +3,7 @@
     <!-- The supported runtimes: net10.0 is the current LTS, net11.0 the current release. -->
     <TargetFrameworks>net10.0;net11.0</TargetFrameworks>
     <PackageId>ZeroAlloc.AsyncEvents</PackageId>
-    <Description>Zero-allocation async event handler structs and async INotify* interfaces for .NET. Lock-free registration, ValueTask invocation, ArrayPool parallel dispatch.</Description>
+    <Description>Zero-allocation async event handlers for .NET 10 and later. Lock-free registration, ValueTask invocation, ArrayPool parallel dispatch.</Description>
     <Version>0.0.0-local</Version>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <IsAotCompatible>true</IsAotCompatible>
