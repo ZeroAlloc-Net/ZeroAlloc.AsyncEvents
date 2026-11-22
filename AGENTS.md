@@ -48,7 +48,7 @@ CI job `sdk10-consumer` needs a 10.0.1xx SDK; `tests/ZeroAlloc.AsyncEvents.Sdk10
 consumer of the packed package with Roslyn 5.0:
 
 ```bash
-v=9.9.9-local.sha$(git rev-parse --short HEAD).$(date +%s)
+v=9.9.9-local.sha$(git rev-parse --short HEAD).$(date +%s).$$
 dotnet pack src/ZeroAlloc.AsyncEvents -c Release -o artifacts -p:Version="$v"
 cd tests/ZeroAlloc.AsyncEvents.Sdk10Smoke/Consumer
 dotnet run -c Release -p:ZeroAllocAsyncEventsVersion="$v"
