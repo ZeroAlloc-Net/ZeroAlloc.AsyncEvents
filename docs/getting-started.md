@@ -13,6 +13,8 @@ sidebar_position: 1
 dotnet add package ZeroAlloc.AsyncEvents
 ```
 
+The generator needs the .NET 10 SDK 10.0.100 or later, or Visual Studio 2026 or later. It is built against Roslyn 5.0, and an older compiler skips it with warning CS9057, after which the generated code is missing. Version 2.0.0 was built against Roslyn 5.12 and loads only in the .NET 11 SDK; on .NET 10, use 2.0.1 or later.
+
 ## Declare a handler
 
 `AsyncEventHandler<TArgs>` is a struct. Declare it as a private field:
