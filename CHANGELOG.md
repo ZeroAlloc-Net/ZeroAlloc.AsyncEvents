@@ -1,5 +1,22 @@
 # Changelog
 
+## [2.0.0](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/compare/v1.2.1...v2.0.0) (2026-11-21)
+
+
+### ⚠ BREAKING CHANGES
+
+* netstandard2.0, netstandard2.1 and net8.0 assets are no longer shipped, so consumers must target net10.0 or later; ZAAE001 is now an error instead of a warning. See the Behaviour change section of PR #312 for migration steps.
+
+### Features
+
+* target net10.0 and net11.0, drop netstandard2.0, netstandard2.1 and net8.0 ([80b0063](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/commit/80b006326b2dd377555f38192e5bd91d752a0c8a))
+
+
+### Bug Fixes
+
+* report ZAAE001 as an error when a containing type is not partial, instead of a warning while nothing is generated ([80b0063](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/commit/80b006326b2dd377555f38192e5bd91d752a0c8a))
+* stop listing async INotify interfaces in the package description and tags, they ship in ZeroAlloc.Notify ([80b0063](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/commit/80b006326b2dd377555f38192e5bd91d752a0c8a))
+
 ## [1.2.1](https://github.com/ZeroAlloc-Net/ZeroAlloc.AsyncEvents/compare/v1.2.0...v1.2.1) (2026-11-16)
 
 
