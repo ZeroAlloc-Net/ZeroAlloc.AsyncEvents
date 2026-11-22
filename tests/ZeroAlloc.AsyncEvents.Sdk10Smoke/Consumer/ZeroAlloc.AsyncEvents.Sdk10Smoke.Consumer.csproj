@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!--
+    Builds a consumer of the packed ZeroAlloc.AsyncEvents package with the oldest supported
+    .NET SDK band, 10.0.1xx, whose compiler is Roslyn 5.0. The package bundles its generator in
+    analyzers/dotnet/cs. A generator built against a newer Roslyn than the compiler that loads it
+    is skipped with CS9057, and then the OrderPlaced event does not exist, so the build fails with
+    CS1061. CS9057 is an error here as well.
+
+    The parent folder's global.json pins the 10.0.1xx band with rollForward latestPatch, so a
+    newer band cannot stand in for it. Run locally with a 10.0.1xx SDK installed:
+      v=9.9.9-local.sha$(git rev-parse HEAD | cut -c1-7).$(date +%s)
+      dotnet pack src/ZeroAlloc.AsyncEvents -c Release -o artifacts -p:Version=$v
+      cd tests/ZeroAlloc.AsyncEvents.Sdk10Smoke/Consumer
+      dotnet run -c Release -p:ZeroAllocAsyncEventsVersion=$v
+    Not part of the solution; the sdk10-consumer job in ci.yml runs it.
+  -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <IsPackable>false</IsPackable>
+    <WarningsAsErrors>$(WarningsAsErrors);CS8032;CS9057</WarningsAsErrors>
+  </PropertyGroup>
+
+  <Target Name="RequireZeroAllocAsyncEventsVersion" BeforeTargets="CollectPackageReferences">
+    <Error Condition="'$(ZeroAllocAsyncEventsVersion)' == ''"
+           Text="Pass the version of the packed package: -p:ZeroAllocAsyncEventsVersion=..." />
+  </Target>
+
+  <ItemGroup>
+    <PackageReference Include="ZeroAlloc.AsyncEvents" Version="[$(ZeroAllocAsyncEventsVersion)]" />
+  </ItemGroup>
+</Project>

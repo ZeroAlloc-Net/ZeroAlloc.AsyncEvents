@@ -45,6 +45,20 @@ dotnet publish samples/ZeroAlloc.AsyncEvents.AotSmoke/ZeroAlloc.AsyncEvents.AotS
 ./aot-out/ZeroAlloc.AsyncEvents.AotSmoke
 ```
 
+CI job `sdk10-consumer` needs a 10.0.1xx SDK; `tests/ZeroAlloc.AsyncEvents.Sdk10Smoke/global.json` pins
+10.0.100 with `rollForward: latestPatch`, so a newer band cannot stand in for it. It builds and runs a
+consumer of the packed package with Roslyn 5.0:
+
+```bash
+v=9.9.9-local.sha$(git rev-parse --short HEAD).$(date +%s)
+dotnet pack src/ZeroAlloc.AsyncEvents -c Release -o artifacts -p:Version="$v"
+cd tests/ZeroAlloc.AsyncEvents.Sdk10Smoke/Consumer
+dotnet run -c Release -p:ZeroAllocAsyncEventsVersion="$v"
+```
+
+CI job `roslyn-floor` calls the shared `roslyn-floor.yml` from ZeroAlloc-Net/.github: it packs the
+solution and fails when a packed DLL references Roslyn above 5.0.0.
+
 Fast inner loop, run in this repo and passing:
 
 ```bash
@@ -55,6 +69,11 @@ The `Release` build sets `TreatWarningsAsErrors`, so analyzer warnings from Mezi
 ZeroAlloc.Analyzers fail the build. Fix them, do not suppress them.
 
 ## Conventions and gotchas
+- The generator references `Microsoft.CodeAnalysis.CSharp` 5.0.0, the compiler of SDK band 10.0.1xx, the
+  oldest supported SDK. A compiler older than the Roslyn it references skips it with `CS9057`, and
+  nothing is generated. The shared Renovate preset holds it below 5.1. If a newer Roslyn API is needed,
+  change the code; raise the floor only together with the minimum SDK. Test projects may use a newer
+  Roslyn.
 
 - Pass `-p:Version` to every command that builds before a pack. `Directory.Build.props` fails `pack` with
   `ZAVERSION001` when no version was supplied and `ZAVERSION002` when the assembly was built without it.
